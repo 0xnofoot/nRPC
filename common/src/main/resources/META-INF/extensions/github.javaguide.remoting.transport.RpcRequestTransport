@@ -1,0 +1,1 @@
+netty=github.javaguide.remoting.transport.netty.client.NettyRpcClient
