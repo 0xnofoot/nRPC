@@ -15,6 +15,10 @@ public class RpcException extends RuntimeException {
         super(rpcErrorMessageEnum.getMessage() + ":" + detail);
     }
 
+    public RpcException(RpcErrorMessageEnum rpcErrorMessageEnum) {
+        super(rpcErrorMessageEnum.getMessage());
+    }
+
     public RpcException(String message, Throwable cause) {
         super(message, cause);
     }

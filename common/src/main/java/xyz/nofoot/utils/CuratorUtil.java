@@ -8,7 +8,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
-import xyz.nofoot.enums.RpcConfigEnum;
+import xyz.nofoot.enums.PropertiesKeyEnum;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -124,10 +124,10 @@ public final class CuratorUtil {
             return zkClient;
         }
 
-        Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
+        Properties properties = PropertiesFileUtil.readPropertiesFile(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey());
         String zookeeperAddress = properties != null
-                && properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) != null
-                ? properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue())
+                && properties.getProperty(PropertiesKeyEnum.ZK_ADDRESS.getKey()) != null
+                ? properties.getProperty(PropertiesKeyEnum.ZK_ADDRESS.getKey())
                 : DEFAULT_ZOOKEEPER_ADDRESS;
 
         ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
@@ -171,11 +171,13 @@ public final class CuratorUtil {
         // 普通启动可能会导致后续重复触发监视器，这样会导致徒增计算量，降低响应速度
         // 如果 zkClient 断开，重连也会触发此监视器
         pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
-        // TODO 这里可能会有一个bug，因为我暂时还不是很熟悉Curator的Cache实现
-        // TODO 如果一个服务下线了，在监视器触发之前服务列表已经被返回
-        // TODO 那么此时服务列表中就包含一个不存在的服务地址
-        // TODO 要是负载均衡正好选到了这个地址，那就出问题了
-        // TODO 暂时还没有解决这个可能存在的问题
+        // TODO 肯能存在的 bug
+        /* 这里可能会有一个bug，因为我暂时还不是很熟悉Curator的Cache实现
+         如果一个服务下线了，在监视器触发之前服务列表已经被返回
+         那么此时服务列表中就包含一个不存在的服务地址
+         要是负载均衡正好选到了这个地址，那就出问题了
+        暂时还没有解决这个可能存在的问题
+        */
 
     }
 }
