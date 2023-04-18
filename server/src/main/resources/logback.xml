@@ -15,7 +15,7 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <logger name="xyz.nofoot" level="ERROR"/>
+    <logger name="xyz.nofoot" level="INFO"/>
 </configuration>
 
 

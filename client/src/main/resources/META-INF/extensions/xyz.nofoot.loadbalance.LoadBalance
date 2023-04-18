@@ -1,0 +1,2 @@
+consistentHash=xyz.nofoot.loadbalance.loadbalancer.ConsistentHashLoadBalance
+random=xyz.nofoot.loadbalance.loadbalancer.RandomLoadBalance

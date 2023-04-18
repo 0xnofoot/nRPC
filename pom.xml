@@ -22,7 +22,7 @@
         <kryo.version>4.0.2</kryo.version>
         <guava.version>30.1.1-jre</guava.version>
         <checkstyle-maven-plugin.version>3.1.1</checkstyle-maven-plugin.version>
-        <spring.version>5.2.7.RELEASE</spring.version>
+        <spring.version>6.0.1</spring.version>
         <curator-version>4.2.0</curator-version>
         <!-- test -->
         <junit.jupiter.version>5.8.2</junit.jupiter.version>

@@ -5,7 +5,6 @@ import xyz.nofoot.demo.DemoRpcServiceImpl;
 import xyz.nofoot.config.RpcServiceConfig;
 import xyz.nofoot.registry.zk.ZkServiceRegistryImpl;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
@@ -19,7 +18,7 @@ import java.net.InetSocketAddress;
 public class ServiceRegistryTest {
     @Test
     public void RegisterServiceByZk() {
-        String host = "192.168.1.5";
+        String host = "192.168.1.6";
         int port = 18084;
         for (int i = 0; i < 5; i++) {
             ZkServiceRegistryImpl zkServiceRegistry = new ZkServiceRegistryImpl();

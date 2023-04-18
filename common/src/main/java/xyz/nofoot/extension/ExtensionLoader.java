@@ -1,6 +1,5 @@
 package xyz.nofoot.extension;
 
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import xyz.nofoot.utils.StringUtil;
 
@@ -17,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.extension
+ * @package: xyz.nofoot.loader.extension
  * @className: ExtensionLoader
  * @author: NoFoot
  * @date: 4/17/2023 6:24 PM

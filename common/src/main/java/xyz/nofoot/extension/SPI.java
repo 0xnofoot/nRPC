@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.extension
+ * @package: xyz.nofoot.loader.extension
  * @annotationName: SPI
  * @author: NoFoot
  * @date: 4/17/2023 6:26 PM

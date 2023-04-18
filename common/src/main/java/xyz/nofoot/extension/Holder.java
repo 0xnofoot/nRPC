@@ -2,7 +2,7 @@ package xyz.nofoot.extension;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.extension
+ * @package: xyz.nofoot.loader.extension
  * @className: Holder
  * @author: NoFoot
  * @date: 4/17/2023 6:22 PM

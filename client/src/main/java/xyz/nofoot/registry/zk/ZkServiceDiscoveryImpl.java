@@ -35,7 +35,7 @@ public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
      */
     public ZkServiceDiscoveryImpl() {
         this.loadBalance = ExtensionLoader.getExtensionLoader(LoadBalance.class)
-                .getExtension(LoadBalanceEnum.LOADBALANCE.getName());
+                .getExtension(LoadBalanceEnum.CONSISTENT_HASH.getName());
     }
 
     /**
