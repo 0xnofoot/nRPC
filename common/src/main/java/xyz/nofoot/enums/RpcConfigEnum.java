@@ -9,7 +9,7 @@ import lombok.Getter;
  * @enumName: RpcConfigEnum
  * @author: NoFoot
  * @date: 4/17/2023 2:55 PM
- * @description rpc 配置枚举
+ * @description: rpc 配置枚举
  */
 @AllArgsConstructor
 @Getter

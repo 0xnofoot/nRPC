@@ -12,15 +12,15 @@ import java.net.InetSocketAddress;
  * @className: ZkServiceRegistryImpl
  * @author: NoFoot
  * @date: 4/17/2023 1:52 PM
- * @description zookeeper 实现的服务注册功能
+ * @description: zookeeper 实现的服务注册功能
  */
 public class ZkServiceRegistryImpl implements ServiceRegistry {
     /**
      * @param rpcServiceName:    服务名称
      * @param inetSocketAddress: 服务地址
-     * @author NoFoot
-     * @date 4/17/2023 3:21 PM
-     * @description 通过 zookeeper 注册服务
+     * @author: NoFoot
+     * @date: 4/17/2023 3:21 PM
+     * @description: 通过 zookeeper 注册服务
      */
     @Override
     public void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress) {

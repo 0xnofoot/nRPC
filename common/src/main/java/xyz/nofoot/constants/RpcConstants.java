@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
  * @className: RpcConstants
  * @author: NoFoot
  * @date: 4/17/2023 1:26 PM
- * @description RPC 协议中的一些宏定义
+ * @description: RPC 协议中的一些宏定义
  */
 public class RpcConstants {
     public static final byte[] MAGIC_NUMBER = {(byte) 'n', (byte) 'r', (byte) 'p', (byte) 'c'};

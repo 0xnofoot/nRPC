@@ -10,7 +10,7 @@ import lombok.ToString;
  * @enumName: RpcResponseCodeEnum
  * @author: NoFoot
  * @date: 4/17/2023 1:12 PM
- * @description RpcResponse 调用的枚举类
+ * @description: RpcResponse 调用的枚举类
  */
 @AllArgsConstructor
 @Getter

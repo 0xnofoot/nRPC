@@ -19,10 +19,10 @@ public interface LoadBalance {
     /**
      * @param serviceUrlList:
      * @param rpcRequest:
-     * @return String
-     * @author NoFoot
-     * @date 4/17/23 11:49 PM
-     * @description 根据服务列表，选择合适的服务信息
+     * @return: String
+     * @author: NoFoot
+     * @date: 4/17/23 11:49 PM
+     * @description: 根据服务列表，选择合适的服务信息
      */
     String selectServerAddress(List<String> serviceUrlList, RpcRequest rpcRequest);
 }

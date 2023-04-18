@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @className: RpcRequest
  * @author: NoFoot
  * @date: 4/17/2023 12:56 PM
- * @description RPC request 实体类
+ * @description: RPC request 实体类
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +37,8 @@ public class RpcRequest implements Serializable {
     private String group;
 
     /**
-     * @return String:
-     * @author NoFoot:
+     * @return: String
+     * @author: NoFoot
      * @date: 4/17/2023 1:04 PM
      * @description: 返回服务名称，一个具体的服务由 interfaceName，group，version三部分决定
      */

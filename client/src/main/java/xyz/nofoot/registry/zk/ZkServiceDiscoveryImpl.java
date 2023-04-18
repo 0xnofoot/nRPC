@@ -21,17 +21,30 @@ import java.util.List;
  * @className: ZkServiceDiscoveryImpl
  * @author: NoFoot
  * @date: 4/17/2023 6:17 PM
- * @description 服务发现的 zookeeper实现
+ * @description: 服务发现的 zookeeper实现
  */
 @Slf4j
 public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
     private final LoadBalance loadBalance;
 
+    /**
+     * @return: null
+     * @author: NoFoot
+     * @date: 4/18/2023 1:22 PM
+     * @description: 构造，加载负载均衡类
+     */
     public ZkServiceDiscoveryImpl() {
         this.loadBalance = ExtensionLoader.getExtensionLoader(LoadBalance.class)
                 .getExtension(LoadBalanceEnum.LOADBALANCE.getName());
     }
 
+    /**
+     * @param rpcRequest:
+     * @return: InetSocketAddress
+     * @author: NoFoot
+     * @date: 4/18/2023 1:22 PM
+     * @description: 查找服务
+     */
     @Override
     public InetSocketAddress lookupService(RpcRequest rpcRequest) {
         String rpcServiceName = rpcRequest.getRpcServiceName();
@@ -42,7 +55,7 @@ public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
         }
 
         String targetServiceUrl = loadBalance.selectServerAddress(serviceUrlList, rpcRequest);
-//        log.info("Successfully found the service address:[{}]", targetServiceUrl);
+        log.info("Successfully found the service address:[{}]", targetServiceUrl);
         String[] socketAddressArray = targetServiceUrl.split(":");
         String host = socketAddressArray[0];
         int port = Integer.parseInt(socketAddressArray[1]);

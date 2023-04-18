@@ -12,18 +12,18 @@ import java.util.Random;
  * @package: xyz.nofoot.loadbalance.loadbalancer
  * @className: RandomLoadBalance
  * @author: NoFoot
- * @date 4/18/23 12:07 AM
- * @description 随机负载均衡策略
+ * @date: 4/18/23 12:07 AM
+ * @description: 随机负载均衡策略
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
 
     /**
      * @param serviceAddresses:
      * @param rpcRequest:
-     * @return String
-     * @author NoFoot
-     * @date 4/18/23 12:12 AM
-     * @description 随机负载均衡策略实现逻辑
+     * @return: String
+     * @author: NoFoot
+     * @date: 4/18/23 12:12 AM
+     * @description: 随机负载均衡策略实现逻辑
      */
     @Override
     protected String doSelect(List<String> serviceAddresses, RpcRequest rpcRequest) {

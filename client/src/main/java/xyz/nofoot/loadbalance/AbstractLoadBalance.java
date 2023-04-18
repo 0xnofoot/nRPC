@@ -18,10 +18,10 @@ public abstract class AbstractLoadBalance implements LoadBalance {
     /**
      * @param serviceAddresses: 服务地址列表
      * @param rpcRequest: rpc 请求消息
-     * @return String
-     * @author NoFoot
-     * @date 4/18/23 12:02 AM
-     * @description 校验服务列表，调用 doSelect() 函数
+     * @return: String
+     * @author: NoFoot
+     * @date: 4/18/23 12:02 AM
+     * @description: 校验服务列表，调用 doSelect() 函数
      */
     @Override
     public String selectServerAddress(List<String> serviceAddresses, RpcRequest rpcRequest) {
@@ -38,10 +38,10 @@ public abstract class AbstractLoadBalance implements LoadBalance {
     /**
      * @param serviceAddresses:
      * @param rpcRequest:
-     * @return String
-     * @author NoFoot
-     * @date 4/18/23 12:02 AM
-     * @description 负载均衡逻辑的抽象方法，继承该类后重写该方法实现负载均衡
+     * @return: String
+     * @author: NoFoot
+     * @date: 4/18/23 12:02 AM
+     * @description: 负载均衡逻辑的抽象方法，继承该类后重写该方法实现负载均衡
      */
     protected abstract String doSelect(List<String> serviceAddresses, RpcRequest rpcRequest);
 }

@@ -6,7 +6,7 @@ package xyz.nofoot.dto;
  * @className: RpcMessage
  * @author: NoFoot
  * @date: 4/17/2023 12:52 PM
- * @description RPC 消息的实体类
+ * @description: RPC 消息的实体类
  */
 public class RpcMessage {
     // 消息类型

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @className: RpcResponse
  * @author: NoFoot
  * @date: 4/17/2023 1:05 PM
- * @description RPC response 实体类
+ * @description: RPC response 实体类
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,10 +35,10 @@ public class RpcResponse<T> implements Serializable {
     /**
      * @param data:
      * @param requestId:
-     * @return RpcResponse<T>
-     * @author NoFoot
-     * @date 4/17/2023 1:08 PM
-     * @description 返回一个成功的 response 消息体
+     * @return: RpcResponse<T>
+     * @author: NoFoot
+     * @date: 4/17/2023 1:08 PM
+     * @description: 返回一个成功的 response 消息体
      */
     public static <T> RpcResponse<T> sucess(T data, String requestId) {
         RpcResponse<T> response = new RpcResponse<>();
@@ -53,10 +53,10 @@ public class RpcResponse<T> implements Serializable {
 
     /**
      * @param rpcResponseCodeEnum:
-     * @return RpcResponse<T>
-     * @author NoFoot
-     * @date 4/17/2023 1:19 PM
-     * @description 返回一个失败的 response 消息体，枚举变量可自定义传入, 或传入 FAIL
+     * @return: RpcResponse<T>
+     * @author: NoFoot
+     * @date: 4/17/2023 1:19 PM
+     * @description: 返回一个失败的 response 消息体，枚举变量可自定义传入, 或传入 FAIL
      */
     public static <T> RpcResponse<T> fail(RpcResponseCodeEnum rpcResponseCodeEnum) {
         RpcResponse<T> response = new RpcResponse<>();

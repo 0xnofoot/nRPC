@@ -21,7 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @className: ExtensionLoader
  * @author: NoFoot
  * @date: 4/17/2023 6:24 PM
- * @description 类加载器, dubbo的 SPI 机制实现, 配置文件应放在 /resources/META-INF/extensions/
+ * @description: 类加载器, dubbo的 SPI 机制实现, 配置文件应放在 /resources/META-INF/extensions/
  * refer to :https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/spi/overview/
  */
 @Slf4j

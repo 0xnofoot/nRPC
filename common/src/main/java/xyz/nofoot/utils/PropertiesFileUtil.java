@@ -14,25 +14,25 @@ import java.util.Properties;
  * @className: PropertiesFileUtil
  * @author: NoFoot
  * @date: 4/17/2023 2:37 PM
- * @description properties 文件工具类
+ * @description: properties 文件工具类
  */
 @Slf4j
 public final class PropertiesFileUtil {
 
     /**
-     * @author NoFoot
-     * @date 4/17/2023 2:39 PM
-     * @description 私有构造
+     * @author: NoFoot
+     * @date: 4/17/2023 2:39 PM
+     * @description: 私有构造
      */
     private PropertiesFileUtil() {
     }
 
     /**
      * @param fileName: properties文件名
-     * @return Properties
-     * @author NoFoot
-     * @date 4/17/2023 3:02 PM
-     * @description 解析 properties文件，返回 properties 对象
+     * @return: Properties
+     * @author: NoFoot
+     * @date: 4/17/2023 3:02 PM
+     * @description: 解析 properties文件，返回 properties 对象
      */
     public static Properties readPropertiesFile(String fileName) {
         URL url = Thread.currentThread().getContextClassLoader().getResource("");

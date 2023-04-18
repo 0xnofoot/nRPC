@@ -6,7 +6,7 @@ package xyz.nofoot.demo;
  * @className: DemoRpcServiceImpl
  * @author: NoFoot
  * @date: 4/17/2023 4:05 PM
- * @description TODO
+ * @description: TODO
  */
 public class DemoRpcServiceImpl implements DemoRpcService {
     @Override
