@@ -34,6 +34,7 @@ public final class CuratorUtil {
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
     private static CuratorFramework zkClient;
+    // 默认 zookeeper 地址，自定义地址请放在 rpc.properties 文件中
     private static final String DEFAULT_ZOOKEEPER_ADDRESS = "127.0.0.1:2181";
 
     /**
@@ -152,7 +153,7 @@ public final class CuratorUtil {
      * @param rpcServiceName:
      * @author NoFoot
      * @date 4/17/2023 3:15 PM
-     * @description 对指定的节点注册一个监听器
+     * @description 对指定的节点注册一个监听器, 当服务的子节点（即服务地址）发生变化时，更新 Map
      */
     private static void registerWatcher(CuratorFramework zkClient, String rpcServiceName) throws Exception {
         String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
@@ -162,7 +163,14 @@ public final class CuratorUtil {
             SERVICE_ADDRESS_MAP.put(rpcServiceName, serviceAddress);
         };
         pathChildrenCache.getListenable().addListener(pathChildrenCacheListener);
-        pathChildrenCache.start();
+        // 同步启动
+        // 先把节点都拉过来，防止后面又重复触发监视器
+        // 因为每一次触发监视器都会更新 Map 的数据
+        // 如果采用一致性 Hash 的负载均衡策略，
+        // 每一次更新 Map 都要重新计算 Hash
+        // 普通启动可能会导致后续重复触发监视器，这样会导致徒增计算量，降低响应速度
+        // 如果 zkClient 断开，重连也会触发此监视器
+        pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
     }
 }
 

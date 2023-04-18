@@ -37,13 +37,13 @@ public class RpcRequest implements Serializable {
     private String group;
 
     /**
-     * @return String
-     * @author NoFoot
-     * @date 4/17/2023 1:04 PM
-     * @description 返回服务名称，一个具体的服务由 interfaceName，group，version三部分决定
+     * @return String:
+     * @author NoFoot:
+     * @date: 4/17/2023 1:04 PM
+     * @description: 返回服务名称，一个具体的服务由 interfaceName，group，version三部分决定
      */
     public String getRpcServiceName() {
-        return this.getInterfaceName() + this.getGroup() + this.getVersion();
+        return this.getInterfaceName() + "_" + this.getGroup() + "_" + this.getVersion();
     }
 
 }

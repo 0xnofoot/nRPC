@@ -10,8 +10,8 @@ import java.util.List;
  * @package: xyz.nofoot.loadbalance
  * @className: AbstractLoadBalance
  * @author: NoFoot
- * @date 4/17/23 11:53 PM
- * @description 对服务地址进行负载均衡的抽象类
+ * @date: 4/17/23 11:53 PM
+ * @description: 对服务地址进行负载均衡的抽象类
  */
 public abstract class AbstractLoadBalance implements LoadBalance {
 

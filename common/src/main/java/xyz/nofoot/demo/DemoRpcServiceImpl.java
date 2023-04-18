@@ -1,4 +1,4 @@
-package xyz.nofoot.registry.demoRpcService;
+package xyz.nofoot.demo;
 
 /**
  * @projectName: nRPC
