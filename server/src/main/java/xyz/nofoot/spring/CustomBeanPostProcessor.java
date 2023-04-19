@@ -1,12 +1,14 @@
 package xyz.nofoot.spring;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 import xyz.nofoot.annotation.RpcService;
+import xyz.nofoot.config.RpcServiceConfig;
 import xyz.nofoot.registry.ServiceProvider;
 import xyz.nofoot.utils.SingletonFactoryUtil;
 
-import java.io.Serial;
 
 /**
  * @projectName: nRPC
@@ -16,6 +18,8 @@ import java.io.Serial;
  * @date: 4/18/23 10:42 PM
  * @description: 自定义 bean 后处理器
  */
+@Slf4j
+@Component
 public class CustomBeanPostProcessor implements BeanPostProcessor {
     private final ServiceProvider serviceProvider;
 
@@ -27,12 +31,11 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
      * @return: null
      * @author: NoFoot
      * @date: 4/19/23 12:37 AM
-     * @description: TODO
+     * @description: 构造
      */
     public CustomBeanPostProcessor() {
         this.serviceProvider = SingletonFactoryUtil.getInstance(ServiceProvider.class);
     }
-
 
     /**
      * @param bean:
@@ -40,11 +43,13 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
      * @return: Object
      * @author: NoFoot
      * @date: 4/18/23 10:50 PM
-     * @description: TODO
+     * @description: 自定义前处理器
      */
+//    @SneakyThrows
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
+        rpcServiceRegister(bean);
+        return bean;
     }
 
 
@@ -53,11 +58,16 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
      * @return: void
      * @author: NoFoot
      * @date: 4/18/23 10:50 PM
-     * @description: TODO
+     * @description: 扫描 RpcService 注解，发现类即自动注册服务
      */
-    private static void rpcServiceRegister(Object bean) {
+    private void rpcServiceRegister(Object bean) {
         if (bean.getClass().isAnnotationPresent(RpcService.class)) {
-
+            RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
+            RpcServiceConfig rpcServiceConfig = RpcServiceConfig.builder()
+                    .group(rpcService.group())
+                    .version(rpcService.version())
+                    .service(bean).build();
+            serviceProvider.publishService(rpcServiceConfig);
         }
     }
 }

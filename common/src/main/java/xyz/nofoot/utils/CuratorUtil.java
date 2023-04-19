@@ -55,14 +55,14 @@ public final class CuratorUtil {
     public static void createPersistentNode(CuratorFramework zkClient, String path) {
         try {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
-                log.info("The node already exists. The node is:[{}]", path);
+                log.info("节点以存在. 节点路径:[{}]", path);
             } else {
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
-                log.info("The node was created successfully. The node is:[{}]", path);
+                log.info("节点成功创建. 节点路径:[{}]", path);
             }
             REGISTERED_PATH_SET.add(path);
         } catch (Exception e) {
-            log.error("create persistent node for path [{}] fail", path);
+            log.error("创建节点失败 [{}]", path);
             e.printStackTrace();
         }
     }
@@ -86,7 +86,7 @@ public final class CuratorUtil {
             SERVICE_ADDRESS_MAP.put(rpcServiceName, result);
             registerWatcher(zkClient, rpcServiceName);
         } catch (Exception e) {
-            log.error("get children nodes for path [{}] fail", servicePath);
+            log.error("获取子节点失败 [{}]", servicePath);
             e.printStackTrace();
         }
         return result;
@@ -110,7 +110,7 @@ public final class CuratorUtil {
                 e.printStackTrace();
             }
         });
-        log.info("All registry services on the server are cleared:[{}]", REGISTERED_PATH_SET);
+        log.info("该机器上所有以注册的服务都以被清除:[{}]", REGISTERED_PATH_SET);
     }
 
     /**
@@ -138,10 +138,10 @@ public final class CuratorUtil {
         zkClient.start();
         try {
             if (!zkClient.blockUntilConnected(30, TimeUnit.SECONDS)) {
-                throw new RuntimeException("Time out waiting to connect to zookeeper");
+                throw new RuntimeException("连接 zookeeper 超时");
             }
         } catch (InterruptedException e) {
-            log.error("zookeeper start fail");
+            log.error("zookeeper 启动失败");
             e.printStackTrace();
         }
 

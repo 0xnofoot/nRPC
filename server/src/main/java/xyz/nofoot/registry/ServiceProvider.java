@@ -24,15 +24,22 @@ import static xyz.nofoot.constants.RpcServiceConstants.DEFAULT_PORT;
  * @className: ServiceProvider
  * @author: NoFoot
  * @date: 4/18/23 10:57 PM
- * @description: TODO
+ * @description: 提供服务相关方法
  */
 @Slf4j
 public class ServiceProvider {
     private final Map<String, Object> serviceMap;
     private final ServiceRegistry serviceRegistry;
 
+    /**
+     * @return: null
+     * @author: NoFoot
+     * @date: 4/19/2023 4:48 PM
+     * @description: 构造
+     */
     public ServiceProvider() {
         this.serviceMap = new ConcurrentHashMap<>();
+        // TODO 优化成 properties 从配置文件加载
         this.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class)
                 .getExtension(ServiceRegistryEnum.ZK.getName());
     }
@@ -41,17 +48,16 @@ public class ServiceProvider {
      * @param rpcServiceConfig:
      * @author: NoFoot
      * @date: 4/18/23 11:00 PM
-     * @description: TODO
+     * @description: 添加服务至 Map（缓存）
      */
-    void addService(RpcServiceConfig rpcServiceConfig) {
+    public void addService(RpcServiceConfig rpcServiceConfig) {
         String rpcServiceName = rpcServiceConfig.getRpcServiceName();
         if (serviceMap.containsKey(rpcServiceName)) {
             log.warn("存在重复服务[{}]", rpcServiceName);
             return;
         }
         serviceMap.put(rpcServiceName, rpcServiceConfig.getService());
-        log.info("添加服务服务[{}], 服务实现接口[{}]"
-                , rpcServiceName, rpcServiceConfig.getService().getClass().getInterfaces());
+        log.info("成功添加服务[{}]", rpcServiceName);
     }
 
     /**
@@ -59,9 +65,9 @@ public class ServiceProvider {
      * @return: Object
      * @author: NoFoot
      * @date: 4/18/23 11:09 PM
-     * @description: TODO
+     * @description: 获取服务对象
      */
-    Object getService(String rpcServiceName) {
+    public Object getService(String rpcServiceName) {
         Object service = serviceMap.get(rpcServiceName);
         if (null == service) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_CAN_NOT_BE_FOUND, "服务：" + rpcServiceName);
@@ -75,9 +81,9 @@ public class ServiceProvider {
      * @return: void
      * @author: NoFoot
      * @date: 4/18/23 11:09 PM
-     * @description: TODO
+     * @description: 向注册中心发布服务
      */
-    void publishService(RpcServiceConfig rpcServiceConfig) {
+    public void publishService(RpcServiceConfig rpcServiceConfig) {
         int port = DEFAULT_PORT;
         Properties properties = PropertiesFileUtil.readPropertiesFile(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey());
         if (null != properties && null != properties.getProperty(PropertiesKeyEnum.PORT.getKey())) {
@@ -93,5 +99,6 @@ public class ServiceProvider {
         } catch (UnknownHostException e) {
             log.error("服务发布失败[{}]", rpcServiceConfig.getRpcServiceName());
         }
+        log.info("发布服务成功[{}]", rpcServiceConfig.getRpcServiceName());
     }
 }
