@@ -16,7 +16,7 @@ import xyz.nofoot.utils.SingletonFactoryUtil;
  * @className: CustomBeanPostProcessor
  * @author: NoFoot
  * @date: 4/18/23 10:42 PM
- * @description: 自定义 bean 后处理器
+ * @description: Server 端自定义 bean 后处理器
  */
 @Slf4j
 @Component
@@ -24,8 +24,6 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
     private final ServiceProvider serviceProvider;
 
 
-    // TODO 不要实现 RpcRequestTransport 接口，直接实现具体类
-//    private final RpcRequestTransport rpcClient;
 
     /**
      * @return: null
