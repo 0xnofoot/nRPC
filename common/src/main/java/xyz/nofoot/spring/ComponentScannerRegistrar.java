@@ -65,7 +65,7 @@ public class ComponentScannerRegistrar implements ImportBeanDefinitionRegistrar,
         //通过注解 bean 加载器加载到所有需要的注解
         // 分为 spring 和 rpc 注解
         // 这两者本质上是一样的，只是spring注解的扫描范围由 SPRING_BEAN_BASE_PACKAGE 决定
-        // rpc 注解的范围由 rpcScanBasePackages  决定
+        // rpc 注解的范围由 rpcScanBasePackages  决定， 即 rpcScan 的字段值决定
         // 这样子写最初的原因是我希望 Server 和 Client 做到最大可能的分离，同时代码能够最大复用
         // 所以在配置文件中可以决定 Spring 需要加载哪些类，Server 和 Client 有自己的配置文件即可
         // 都可以 @Import 这个类，调用这个方法做到自定义加载 bean

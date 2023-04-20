@@ -15,6 +15,7 @@ import lombok.Getter;
 @Getter
 public enum ServiceRegistryEnum {
     ZK("zk"),
+    // TODO  redis暂未实现
     REDIS("redis");
 
     private final String name;

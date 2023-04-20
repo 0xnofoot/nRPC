@@ -23,7 +23,7 @@ public class RpcConstants {
     // ping
     public static final byte HEARTBEAT_REQUEST_TYPE = 3;
     // pong
-    public static final byte HEARTBEAT_RESPONSE_TYPE = 3;
+    public static final byte HEARTBEAT_RESPONSE_TYPE = 4;
 
     public static final int HEAD_LENGTH = 16;
     public static final String PING = "ping";

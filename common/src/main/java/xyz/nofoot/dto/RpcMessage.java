@@ -1,5 +1,7 @@
 package xyz.nofoot.dto;
 
+import lombok.*;
+
 /**
  * @projectName: nRPC
  * @package: xyz.nofoot.dto
@@ -8,6 +10,12 @@ package xyz.nofoot.dto;
  * @date: 4/17/2023 12:52 PM
  * @description: RPC 消息的实体类
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
 public class RpcMessage {
     // 消息类型
     private byte messageType;
@@ -16,7 +24,7 @@ public class RpcMessage {
     // 压缩类型
     private byte compress;
     // 请求 id
-    private byte requestId;
+    private int requestId;
     // 封装的具体数据
     private Object data;
 }

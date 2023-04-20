@@ -23,11 +23,5 @@
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- netty -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
-        </dependency>
     </dependencies>
 </project>

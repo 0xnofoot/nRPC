@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class RpcResponse<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = 846298462048640197L;
-    // 请求 id
+    // 对应的请求 id
     private String requestId;
     // 响应状态码
     private Integer code;
