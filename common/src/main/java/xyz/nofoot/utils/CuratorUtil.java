@@ -99,7 +99,7 @@ public final class CuratorUtil {
      * @date 4/17/2023 2:34 PM
      * @description 根据服务地址删除对应的服务
      */
-    private static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
+    public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
         REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
             try {
                 if (p.endsWith(inetSocketAddress.toString())) {
@@ -110,7 +110,7 @@ public final class CuratorUtil {
                 e.printStackTrace();
             }
         });
-        log.info("该机器上所有以注册的服务都以被清除:[{}]", REGISTERED_PATH_SET);
+        log.info("该机器注册的所有服务都以被清除:[{}]", REGISTERED_PATH_SET);
     }
 
     /**

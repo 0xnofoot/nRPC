@@ -44,11 +44,23 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
      * @param beanName:
      * @return: Object
      * @author: NoFoot
-     * @date: 4/21/2023 10:24 AM
+     * @date: 4/21/2023 10:54 AM
      * @description: TODO
      */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        wireRpcReferenceProxy(bean);
+        return bean;
+    }
+
+    /**
+     * @param bean:
+     * @return: void
+     * @author: NoFoot
+     * @date: 4/21/2023 10:54 AM
+     * @description: TODO
+     */
+    private void wireRpcReferenceProxy(Object bean) {
         Class<?> targetClass = bean.getClass();
         Field[] declaredFields = targetClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
@@ -67,6 +79,6 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
                 }
             }
         }
-        return bean;
     }
+
 }
