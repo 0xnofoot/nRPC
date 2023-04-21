@@ -4,6 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import xyz.nofoot.annotation.RpcReference;
+import xyz.nofoot.config.RpcServiceConfig;
+import xyz.nofoot.enums.RpcRequestTransportEnum;
+import xyz.nofoot.extension.ExtensionLoader;
+import xyz.nofoot.proxy.RpcClientProxy;
+import xyz.nofoot.transport.RpcRequestTransport;
+
+import java.lang.reflect.Field;
 
 /**
  * @projectName: nRPC
@@ -16,12 +24,49 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CustomBeanPostProcessor implements BeanPostProcessor {
-    // TODO 不要实现 RpcRequestTransport 接口，直接实现具体类
-//    private final RpcRequestTransport rpcClient;
+    private final RpcRequestTransport rpcClient;
+
+    /**
+     * @return: null
+     * @author: NoFoot
+     * @date: 4/21/2023 10:24 AM
+     * @description: TODO
+     */
+    public CustomBeanPostProcessor() {
+        // TODO 配置文件
+        this.rpcClient = ExtensionLoader.getExtensionLoader(RpcRequestTransport.class)
+                .getExtension(RpcRequestTransportEnum.NETTY.getName());
+    }
 
 
+    /**
+     * @param bean:
+     * @param beanName:
+     * @return: Object
+     * @author: NoFoot
+     * @date: 4/21/2023 10:24 AM
+     * @description: TODO
+     */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
+        Class<?> targetClass = bean.getClass();
+        Field[] declaredFields = targetClass.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            RpcReference rpcReference = declaredField.getAnnotation(RpcReference.class);
+            if (null != rpcReference) {
+                RpcServiceConfig rpcServiceConfig = RpcServiceConfig.builder()
+                        .group(rpcReference.group())
+                        .version(rpcReference.version()).build();
+                RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcClient, rpcServiceConfig);
+                Object clientProxy = rpcClientProxy.getProxy(declaredField.getType());
+                declaredField.setAccessible(true);
+                try {
+                    declaredField.set(bean, clientProxy);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bean;
     }
 }
