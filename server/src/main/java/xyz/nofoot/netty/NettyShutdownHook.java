@@ -1,7 +1,7 @@
 package xyz.nofoot.netty;
 
 import lombok.extern.slf4j.Slf4j;
-import xyz.nofoot.constants.RpcServiceConstants;
+import xyz.nofoot.config.RpcServerConfig;
 import xyz.nofoot.utils.CuratorUtil;
 
 import java.net.InetAddress;
@@ -31,11 +31,11 @@ public class NettyShutdownHook {
     }
 
     public void clearAll() {
-        log.info("服务关闭，执行清理任务");
+        log.info("添加服务关闭Hook，用于删除所有注册的服务");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(
-                        InetAddress.getLocalHost().getHostAddress(), RpcServiceConstants.DEFAULT_PORT);
+                        InetAddress.getLocalHost().getHostAddress(), RpcServerConfig.getServerPort());
                 CuratorUtil.clearRegistry(CuratorUtil.getZkClient(), inetSocketAddress);
             } catch (UnknownHostException e) {
                 e.printStackTrace();

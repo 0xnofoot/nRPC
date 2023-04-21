@@ -2,7 +2,9 @@ package xyz.nofoot.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -48,8 +50,7 @@ public final class PropertiesFileUtil {
             properties = new Properties();
             properties.load(inputStreamReader);
         } catch (IOException e) {
-            log.error("can not read properties file [{}]", fileName);
-            e.printStackTrace();
+            log.warn("配置文件中未配置 [{}], 可能会采用默认值", fileName);
         }
         return properties;
     }

@@ -13,6 +13,7 @@
         <module>client</module>
         <module>common</module>
         <module>server-hello</module>
+        <module>api</module>
     </modules>
 
     <properties>

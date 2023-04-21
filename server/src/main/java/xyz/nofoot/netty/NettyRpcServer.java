@@ -11,8 +11,8 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import xyz.nofoot.config.RpcServerConfig;
 import xyz.nofoot.config.RpcServiceConfig;
-import xyz.nofoot.constants.RpcServiceConstants;
 import xyz.nofoot.netty.handler.NettyRpcServerHandler;
 import xyz.nofoot.netty.handler.RpcMessageDecoder;
 import xyz.nofoot.netty.handler.RpcMessageEncoder;
@@ -75,7 +75,7 @@ public class NettyRpcServer {
                             p.addLast(serviceHandlerGroup, new NettyRpcServerHandler());
                         }
                     });
-            ChannelFuture f = b.bind(host, RpcServiceConstants.DEFAULT_PORT).sync();
+            ChannelFuture f = b.bind(host, RpcServerConfig.getServerPort()).sync();
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("Server 启动失败: ", e);

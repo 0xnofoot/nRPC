@@ -1,22 +1,18 @@
 package xyz.nofoot.registry;
 
 import lombok.extern.slf4j.Slf4j;
+import xyz.nofoot.config.RpcServerConfig;
 import xyz.nofoot.config.RpcServiceConfig;
-import xyz.nofoot.enums.PropertiesKeyEnum;
 import xyz.nofoot.enums.RpcErrorMessageEnum;
 import xyz.nofoot.enums.ServiceRegistryEnum;
 import xyz.nofoot.exception.RpcException;
 import xyz.nofoot.extension.ExtensionLoader;
-import xyz.nofoot.utils.PropertiesFileUtil;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static xyz.nofoot.constants.RpcServiceConstants.DEFAULT_PORT;
 
 /**
  * @projectName: nRPC
@@ -84,18 +80,13 @@ public class ServiceProvider {
      * @description: 向注册中心发布服务
      */
     public void publishService(RpcServiceConfig rpcServiceConfig) {
-        int port = DEFAULT_PORT;
-        Properties properties = PropertiesFileUtil.readPropertiesFile(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey());
-        if (null != properties && null != properties.getProperty(PropertiesKeyEnum.PORT.getKey())) {
-            String p = properties.getProperty(PropertiesKeyEnum.PORT.getKey());
-            port = Integer.parseInt(p);
-        }
+        int serverPort = RpcServerConfig.getServerPort();
 
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(rpcServiceConfig);
             serviceRegistry.registerService(rpcServiceConfig.getRpcServiceName()
-                    , new InetSocketAddress(host, port));
+                    , new InetSocketAddress(host, serverPort));
         } catch (UnknownHostException e) {
             log.error("服务发布失败[{}]", rpcServiceConfig.getRpcServiceName());
         }

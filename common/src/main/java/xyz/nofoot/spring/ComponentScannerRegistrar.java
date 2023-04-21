@@ -7,12 +7,14 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.StandardAnnotationMetadata;
 import xyz.nofoot.annotation.RpcScan;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import static xyz.nofoot.constants.SpringConstants.*;
+import static xyz.nofoot.constants.SpringConstants.RPC_PACKAGE_ATTRIBUTE_NAME;
+import static xyz.nofoot.constants.SpringConstants.SPRING_BEAN_BASE_PACKAGE;
 
 /**
  * @projectName: nRPC
@@ -59,7 +61,7 @@ public class ComponentScannerRegistrar implements ImportBeanDefinitionRegistrar,
         }
         // 如果没解析到值，直接传入工程基包
         if (rpcScanBasePackages.length == 0) {
-            rpcScanBasePackages = new String[]{BEAN_BASE_PACKAGE};
+            rpcScanBasePackages = new String[]{((StandardAnnotationMetadata) importingClassMetadata).getIntrospectedClass().getPackage().getName()};
         }
 
         //通过注解 bean 加载器加载到所有需要的注解

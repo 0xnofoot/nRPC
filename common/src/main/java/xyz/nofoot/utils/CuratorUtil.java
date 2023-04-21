@@ -55,7 +55,7 @@ public final class CuratorUtil {
     public static void createPersistentNode(CuratorFramework zkClient, String path) {
         try {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
-                log.info("节点以存在. 节点路径:[{}]", path);
+                log.info("节点已存在. 节点路径:[{}]", path);
             } else {
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
                 log.info("节点成功创建. 节点路径:[{}]", path);
@@ -97,7 +97,7 @@ public final class CuratorUtil {
      * @param inetSocketAddress: 服务地址
      * @author NoFoot
      * @date 4/17/2023 2:34 PM
-     * @description 根据服务地址删除对应的服务
+     * @description 根据服务地址删除对应的服务, 在关闭 Hook中被调用, Server被关闭时被调用
      */
     public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
         REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
@@ -106,7 +106,7 @@ public final class CuratorUtil {
                     zkClient.delete().forPath(p);
                 }
             } catch (Exception e) {
-                log.error("clear registry for path [{}] fail", p);
+                log.error("清除服务失败 [{}]", p);
                 e.printStackTrace();
             }
         });
