@@ -40,7 +40,7 @@ public class NettyShutdownHook {
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
-
+            log.info("Server 已关闭");
         }));
     }
 

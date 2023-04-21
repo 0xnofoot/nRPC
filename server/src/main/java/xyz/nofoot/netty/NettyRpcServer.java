@@ -76,6 +76,7 @@ public class NettyRpcServer {
                         }
                     });
             ChannelFuture f = b.bind(host, RpcServerConfig.getServerPort()).sync();
+            log.info("Server 启动成功 [{}:{}]", host, RpcServerConfig.getServerPort());
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("Server 启动失败: ", e);

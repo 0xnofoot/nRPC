@@ -110,7 +110,7 @@ public final class CuratorUtil {
                 e.printStackTrace();
             }
         });
-        log.info("该机器注册的所有服务都以被清除:[{}]", REGISTERED_PATH_SET);
+        log.info("该机器注册的所有服务都已被清除:[{}]", REGISTERED_PATH_SET);
     }
 
     /**
