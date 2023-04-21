@@ -9,8 +9,8 @@ import java.util.Properties;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.constants
- * @className: RpcServerConstants
+ * @package: xyz.nofoot.config
+ * @className: RpcServerConfig
  * @author: NoFoot
  * @date: 4/19/23 12:04 AM
  * @description: TODO
