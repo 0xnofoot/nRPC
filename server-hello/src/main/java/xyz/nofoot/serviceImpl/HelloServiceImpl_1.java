@@ -1,8 +1,8 @@
 package xyz.nofoot.serviceImpl;
 
-import dto.Hello;
+import xyz.nofoot.dto.Hello;
 import lombok.extern.slf4j.Slf4j;
-import service.HelloService;
+import xyz.nofoot.service.HelloService;
 import xyz.nofoot.annotation.RpcService;
 
 /**

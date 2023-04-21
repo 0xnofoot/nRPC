@@ -14,6 +14,7 @@
         <module>common</module>
         <module>server-hello</module>
         <module>api</module>
+        <module>client-hello</module>
     </modules>
 
     <properties>

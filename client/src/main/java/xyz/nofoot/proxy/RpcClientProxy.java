@@ -72,7 +72,7 @@ public class RpcClientProxy implements InvocationHandler {
      */
     @Override
     @SneakyThrows
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         RpcRequest rpcRequest = RpcRequest.builder()
                 .methodName(method.getName())
                 .parameters(args)

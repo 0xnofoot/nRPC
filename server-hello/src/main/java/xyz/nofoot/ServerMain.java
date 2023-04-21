@@ -12,7 +12,7 @@ import xyz.nofoot.netty.NettyRpcServer;
  * @date: 4/21/2023 2:04 PM
  * @description: TODO
  */
-@RpcScan(basePackage = {})
+@RpcScan(basePackage = {"xyz.nofoot"})
 public class ServerMain {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ServerMain.class);

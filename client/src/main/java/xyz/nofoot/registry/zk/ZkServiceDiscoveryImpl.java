@@ -55,7 +55,7 @@ public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
         }
 
         String targetServiceUrl = loadBalance.selectServerAddress(serviceUrlList, rpcRequest);
-        log.info("Successfully found the service address:[{}]", targetServiceUrl);
+        log.info("成功获取服务地址 :[{}]", targetServiceUrl);
         String[] socketAddressArray = targetServiceUrl.split(":");
         String host = socketAddressArray[0];
         int port = Integer.parseInt(socketAddressArray[1]);

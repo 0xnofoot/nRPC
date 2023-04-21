@@ -64,11 +64,11 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                     log.info(String.format("Server 获取执行结果: %s", result.toString()));
                     rpcMessage.setMessageType(RpcConstants.RESPONSE_TYPE);
                     if (ctx.channel().isActive() && ctx.channel().isWritable()) {
-                        RpcResponse<Object> rpcResponse = RpcResponse.sucess(result, rpcRequest.getRequestID());
-                        rpcResponse.setData(rpcResponse);
+                        RpcResponse<Object> rpcResponse = RpcResponse.success(result, rpcRequest.getRequestID());
+                        rpcMessage.setData(rpcResponse);
                     } else {
                         RpcResponse<Object> rpcResponse = RpcResponse.fail(RpcResponseCodeEnum.FAIL);
-                        rpcResponse.setData(rpcResponse);
+                        rpcMessage.setData(rpcResponse);
                         log.error("结果写回失败！！");
                     }
                 }

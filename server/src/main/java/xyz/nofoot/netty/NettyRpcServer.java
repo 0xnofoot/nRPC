@@ -69,7 +69,7 @@ public class NettyRpcServer {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
+                            p.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.HOURS));
                             p.addLast(new RpcMessageEncoder());
                             p.addLast(new RpcMessageDecoder());
                             p.addLast(serviceHandlerGroup, new NettyRpcServerHandler());

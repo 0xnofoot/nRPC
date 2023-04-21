@@ -1,1 +1,1 @@
-gzip=xyz.nofoot.compress.gzip.GzipCompress
+gzip=xyz.nofoot.compress.impl.GzipCompress

@@ -1,6 +1,6 @@
-package service;
+package xyz.nofoot.service;
 
-import dto.Hello;
+import xyz.nofoot.dto.Hello;
 
 /**
  * @projectName: nRPC

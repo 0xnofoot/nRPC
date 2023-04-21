@@ -1,4 +1,4 @@
-package dto;
+package xyz.nofoot.dto;
 
 import lombok.*;
 

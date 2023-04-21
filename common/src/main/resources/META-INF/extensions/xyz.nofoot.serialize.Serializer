@@ -1,3 +1,1 @@
-kyro=xyz.nofoot.serialize.kyro.KryoSerializer
-protostuff=xyz.nofoot.serialize.protostuff.ProtostuffSerializer
-hessian=xyz.nofoot.serialize.hessian.HessianSerializer
+hessian=xyz.nofoot.serialize.impl.HessianSerializer
