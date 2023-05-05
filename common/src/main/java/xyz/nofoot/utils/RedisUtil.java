@@ -31,6 +31,14 @@ public final class RedisUtil {
     private static final String DEFAULT_REDIS_PASSWORD = null;
 
     /**
+     * @author: NoFoot
+     * @date: 5/5/2023 7:47 PM
+     * @description: 私有无参构造
+     */
+    private RedisUtil() {
+    }
+
+    /**
      * @return: StringRedisTemplate
      * @author: NoFoot
      * @date: 5/5/2023 7:32 PM

@@ -13,7 +13,6 @@ import xyz.nofoot.enums.PropertiesKeyEnum;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -124,11 +123,7 @@ public final class CuratorUtil {
             return zkClient;
         }
 
-        Properties properties = PropertiesFileUtil.readPropertiesFile(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey());
-        String zookeeperAddress = properties != null
-                && properties.getProperty(PropertiesKeyEnum.ZK_ADDRESS.getKey()) != null
-                ? properties.getProperty(PropertiesKeyEnum.ZK_ADDRESS.getKey())
-                : DEFAULT_ZOOKEEPER_ADDRESS;
+        String zookeeperAddress = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.ZK_ADDRESS.getKey(), DEFAULT_ZOOKEEPER_ADDRESS);
 
         ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
         zkClient = CuratorFrameworkFactory.builder()
