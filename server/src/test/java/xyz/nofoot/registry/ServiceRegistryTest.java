@@ -1,9 +1,8 @@
 package xyz.nofoot.registry;
 
 import org.junit.Test;
-import xyz.nofoot.demo.DemoRpcServiceImpl;
 import xyz.nofoot.config.RpcServiceConfig;
-import xyz.nofoot.registry.zk.ZkServiceRegistryImpl;
+import xyz.nofoot.registry.impl.ZkServiceRegistry;
 
 import java.net.InetSocketAddress;
 
@@ -21,10 +20,10 @@ public class ServiceRegistryTest {
         String host = "192.168.1.6";
         int port = 18084;
         for (int i = 0; i < 5; i++) {
-            ZkServiceRegistryImpl zkServiceRegistry = new ZkServiceRegistryImpl();
+            ZkServiceRegistry zkServiceRegistry = new ZkServiceRegistry();
             InetSocketAddress address = new InetSocketAddress(host, port);
             RpcServiceConfig demoRpcService = RpcServiceConfig.builder()
-                    .group("test1").version("v1").service(new DemoRpcServiceImpl()).build();
+                    .group("test1").version("v1").service(new HelloServiceImpl_1()).build();
             zkServiceRegistry.registerService(demoRpcService.getRpcServiceName(), address);
             port++;
         }

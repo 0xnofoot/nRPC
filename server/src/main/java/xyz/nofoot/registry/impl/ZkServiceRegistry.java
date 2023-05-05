@@ -1,4 +1,4 @@
-package xyz.nofoot.registry.zk;
+package xyz.nofoot.registry.impl;
 
 import org.apache.curator.framework.CuratorFramework;
 import xyz.nofoot.registry.ServiceRegistry;
@@ -8,13 +8,13 @@ import java.net.InetSocketAddress;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.registry.zk
- * @className: ZkServiceRegistryImpl
+ * @package: xyz.nofoot.registry.impl
+ * @className: ZkServiceRegistry
  * @author: NoFoot
  * @date: 4/17/2023 1:52 PM
  * @description: zookeeper 实现的服务注册功能
  */
-public class ZkServiceRegistryImpl implements ServiceRegistry {
+public class ZkServiceRegistry implements ServiceRegistry {
     /**
      * @param rpcServiceName:    服务名称
      * @param inetSocketAddress: 服务地址

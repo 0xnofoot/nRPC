@@ -1,6 +1,7 @@
 package xyz.nofoot.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import xyz.nofoot.enums.PropertiesKeyEnum;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -53,5 +54,59 @@ public final class PropertiesFileUtil {
             log.warn("配置文件中未配置 [{}], 可能会采用默认值", fileName);
         }
         return properties;
+    }
+
+
+    /**
+     * @param fileName:
+     * @param key:
+     * @param defaultValue:
+     * @return: String
+     * @author: NoFoot
+     * @date: 5/5/2023 6:22 PM
+     * @description: TODO
+     */
+    public static String getProperty(String fileName, String key, String defaultValue) {
+        Properties properties = readPropertiesFile(fileName);
+        if (properties == null) {
+            log.error("配置文件错误 [{}]", fileName);
+            return defaultValue;
+        }
+        return properties.getProperty(key, defaultValue);
+    }
+
+    /**
+     * @param fileName:
+     * @param key:
+     * @return: String
+     * @author: NoFoot
+     * @date: 5/5/2023 6:23 PM
+     * @description: TODO
+     */
+    public static String getProperty(String fileName, String key) {
+        return getProperty(fileName, key, null);
+    }
+
+    /**
+     * @param key:
+     * @param defaultValue:
+     * @return: String
+     * @author: NoFoot
+     * @date: 5/5/2023 6:24 PM
+     * @description: TODO
+     */
+    public static String getRpcProperty(String key, String defaultValue) {
+        return getProperty(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey(), key, defaultValue);
+    }
+
+    /**
+     * @param key:
+     * @return: String
+     * @author: NoFoot
+     * @date: 5/5/2023 6:24 PM
+     * @description: TODO
+     */
+    public static String getRpcProperty(String key) {
+        return getProperty(PropertiesKeyEnum.RPC_CONFIG_PATH.getKey(), key);
     }
 }

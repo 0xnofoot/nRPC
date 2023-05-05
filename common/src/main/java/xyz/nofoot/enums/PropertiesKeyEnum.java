@@ -19,7 +19,13 @@ public enum PropertiesKeyEnum {
     // 服务发布的端口
     PORT("port"),
     // zookeeper 地址的 key
-    ZK_ADDRESS("rpc.zookeeper.address");
+    ZK_ADDRESS("rpc.zookeeper.address"),
+    // redis 地址的 key
+    REDIS_ADDRESS("rpc.redis.address"),
+    // redis 地址的 key
+    REDIS_USERNAME("rpc.redis.username"),
+    // redis 地址的 key
+    REDIS_PASSWORD("rpc.redis.password");
     // 在这里自定义一些配置的 key
 
     private final String key;

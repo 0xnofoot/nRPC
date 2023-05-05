@@ -1,1 +1,1 @@
-zk=xyz.nofoot.registry.zk.ZkServiceRegistryImpl
+zk=xyz.nofoot.registry.impl.ZkServiceRegistry

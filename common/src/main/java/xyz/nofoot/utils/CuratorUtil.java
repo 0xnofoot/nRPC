@@ -50,7 +50,7 @@ public final class CuratorUtil {
      * @param path:     传入的路径
      * @author NoFoot
      * @date 4/17/2023 2:20 PM
-     * @description 注册一个服务
+     * @description 创建节点，注册一个服务
      */
     public static void createPersistentNode(CuratorFramework zkClient, String path) {
         try {
@@ -171,7 +171,7 @@ public final class CuratorUtil {
         // 普通启动可能会导致后续重复触发监视器，这样会导致徒增计算量，降低响应速度
         // 如果 zkClient 断开，重连也会触发此监视器
         pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
-        // TODO 肯能存在的 bug
+        // TODO 可能存在的 bug
         /* 这里可能会有一个bug，因为我暂时还不是很熟悉Curator的Cache实现
          如果一个服务下线了，在监视器触发之前服务列表已经被返回
          那么此时服务列表中就包含一个不存在的服务地址
@@ -181,17 +181,3 @@ public final class CuratorUtil {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
