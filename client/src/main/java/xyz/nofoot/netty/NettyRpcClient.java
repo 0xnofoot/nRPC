@@ -89,7 +89,7 @@ public class NettyRpcClient implements RpcRequestTransport {
             unprocessedRequests.put(rpcRequest.getRequestID(), resultFuture);
             RpcMessage rpcMessage = RpcMessage.builder()
                     .data(rpcRequest)
-                    .codec(SerializationTypeEnum.KYRO.getCode())
+                    .codec(SerializationTypeEnum.PROTOSTUFF.getCode())
                     .compress(CompressTypeEnum.GZIP.getCode())
                     .messageType(RpcConstants.REQUEST_TYPE).build();
             channel.writeAndFlush(rpcMessage).addListener((ChannelFutureListener) future -> {

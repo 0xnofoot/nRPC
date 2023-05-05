@@ -13,7 +13,7 @@ import java.util.Properties;
  * @className: RpcServerConfig
  * @author: NoFoot
  * @date: 4/19/23 12:04 AM
- * @description: TODO
+ * @description: Server 端的配置类
  */
 @Slf4j
 public class RpcServerConfig {
@@ -25,7 +25,7 @@ public class RpcServerConfig {
      * @return: int
      * @author: NoFoot
      * @date: 4/21/2023 3:31 PM
-     * @description: TODO
+     * @description: 根据 rpc.properties 获得 Server 端口号
      */
     public static int getServerPort() {
         if (SERVER_PORT != -1) {
