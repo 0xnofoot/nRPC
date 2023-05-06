@@ -12,9 +12,9 @@
         <module>server</module>
         <module>client</module>
         <module>common</module>
-        <module>server-hello</module>
+        <module>hello-server</module>
         <module>api</module>
-        <module>client-hello</module>
+        <module>hello-client</module>
     </modules>
 
     <properties>
