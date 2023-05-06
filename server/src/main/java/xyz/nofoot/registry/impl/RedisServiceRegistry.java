@@ -1,6 +1,7 @@
 package xyz.nofoot.registry.impl;
 
 import xyz.nofoot.registry.ServiceRegistry;
+import xyz.nofoot.utils.RedisUtil;
 
 import java.net.InetSocketAddress;
 
@@ -10,7 +11,7 @@ import java.net.InetSocketAddress;
  * @className: RedisServiceRegistry
  * @author: NoFoot
  * @date: 5/5/2023 4:24 PM
- * @description: TODO
+ * @description: Redis 实现的服务注册功能
  */
 public class RedisServiceRegistry implements ServiceRegistry {
 
@@ -20,10 +21,10 @@ public class RedisServiceRegistry implements ServiceRegistry {
      * @return: void
      * @author: NoFoot
      * @date: 5/5/2023 4:25 PM
-     * @description: TODO
+     * @description: 通过 Redis 注册服务
      */
     @Override
     public void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress) {
-
+        RedisUtil.addServiceIdentity(rpcServiceName, inetSocketAddress);
     }
 }
