@@ -25,8 +25,7 @@ public final class RedisUtil {
     private static final Set<String> REGISTERED_SERVICE_SET = ConcurrentHashMap.newKeySet();
     private static StringRedisTemplate stringRedisTemplate;
     // 默认 redis 地址，自定义地址请放在 rpc.properties 文件中
-//    private static final String DEFAULT_REDIS_ADDRESS = "127.0.0.1:6379";
-    private static final String DEFAULT_REDIS_ADDRESS = "192.168.1.101:6379";
+    private static final String DEFAULT_REDIS_ADDRESS = "127.0.0.1:6379";
     private static final String DEFAULT_REDIS_USERNAME = null;
     private static final String DEFAULT_REDIS_PASSWORD = null;
 

@@ -14,6 +14,7 @@ import xyz.nofoot.dto.RpcMessage;
 import xyz.nofoot.dto.RpcRequest;
 import xyz.nofoot.dto.RpcResponse;
 import xyz.nofoot.enums.CompressTypeEnum;
+import xyz.nofoot.enums.PropertiesKeyEnum;
 import xyz.nofoot.enums.SerializationTypeEnum;
 import xyz.nofoot.enums.ServiceRegistryEnum;
 import xyz.nofoot.extension.ExtensionLoader;
@@ -22,6 +23,7 @@ import xyz.nofoot.netty.handler.RpcMessageDecoder;
 import xyz.nofoot.netty.handler.RpcMessageEncoder;
 import xyz.nofoot.registry.ServiceDiscovery;
 import xyz.nofoot.transport.RpcRequestTransport;
+import xyz.nofoot.utils.PropertiesFileUtil;
 import xyz.nofoot.utils.SingletonFactoryUtil;
 
 import java.net.InetSocketAddress;
@@ -67,8 +69,10 @@ public class NettyRpcClient implements RpcRequestTransport {
                         p.addLast(new NettyRpcClientHandler());
                     }
                 });
+
+        String registry = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.RPC_REGISTRY.getKey(), ServiceRegistryEnum.ZK.getName());
         this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class)
-                .getExtension(ServiceRegistryEnum.REDIS.getName());
+                .getExtension(registry);
         this.unprocessedRequests = SingletonFactoryUtil.getInstance(UnprocessedRequests.class);
         this.channelProvider = SingletonFactoryUtil.getInstance(ChannelProvider.class);
     }

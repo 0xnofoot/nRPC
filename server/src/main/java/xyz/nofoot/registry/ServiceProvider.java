@@ -3,10 +3,12 @@ package xyz.nofoot.registry;
 import lombok.extern.slf4j.Slf4j;
 import xyz.nofoot.config.RpcServerConfig;
 import xyz.nofoot.config.RpcServiceConfig;
+import xyz.nofoot.enums.PropertiesKeyEnum;
 import xyz.nofoot.enums.RpcErrorMessageEnum;
 import xyz.nofoot.enums.ServiceRegistryEnum;
 import xyz.nofoot.exception.RpcException;
 import xyz.nofoot.extension.ExtensionLoader;
+import xyz.nofoot.utils.PropertiesFileUtil;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -35,9 +37,9 @@ public class ServiceProvider {
      */
     public ServiceProvider() {
         this.serviceMap = new ConcurrentHashMap<>();
-        // TODO 优化成 properties 从配置文件加载
+        String registry = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.RPC_REGISTRY.getKey(), ServiceRegistryEnum.ZK.getName());
         this.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class)
-                .getExtension(ServiceRegistryEnum.REDIS.getName());
+                .getExtension(registry);
     }
 
     /**

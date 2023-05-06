@@ -16,6 +16,8 @@ import lombok.Getter;
 public enum PropertiesKeyEnum {
     // 配置文件名
     RPC_CONFIG_PATH("rpc.properties"),
+    // 注册中心实现
+    RPC_REGISTRY("rpc.registry"),
     // 服务发布的端口
     PORT("port"),
     // zookeeper 地址的 key
