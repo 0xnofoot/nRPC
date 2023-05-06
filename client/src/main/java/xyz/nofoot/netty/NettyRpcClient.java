@@ -68,7 +68,7 @@ public class NettyRpcClient implements RpcRequestTransport {
                     }
                 });
         this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class)
-                .getExtension(ServiceRegistryEnum.ZK.getName());
+                .getExtension(ServiceRegistryEnum.REDIS.getName());
         this.unprocessedRequests = SingletonFactoryUtil.getInstance(UnprocessedRequests.class);
         this.channelProvider = SingletonFactoryUtil.getInstance(ChannelProvider.class);
     }

@@ -37,7 +37,7 @@ public class ServiceProvider {
         this.serviceMap = new ConcurrentHashMap<>();
         // TODO 优化成 properties 从配置文件加载
         this.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class)
-                .getExtension(ServiceRegistryEnum.ZK.getName());
+                .getExtension(ServiceRegistryEnum.REDIS.getName());
     }
 
     /**

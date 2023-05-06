@@ -1,1 +1,2 @@
 zk=xyz.nofoot.registry.impl.ZkServiceRegistry
+redis=xyz.nofoot.registry.impl.RedisServiceRegistry
