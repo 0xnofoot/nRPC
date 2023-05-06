@@ -13,7 +13,7 @@
         <module>client</module>
         <module>common</module>
         <module>hello-server</module>
-        <module>api</module>
+        <module>hello-api</module>
         <module>hello-client</module>
     </modules>
 
