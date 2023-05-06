@@ -24,5 +24,5 @@ public interface LoadBalance {
      * @date: 4/17/23 11:49 PM
      * @description: 根据服务列表，选择合适的服务信息
      */
-    String selectServerAddress(List<String> serviceUrlList, RpcRequest rpcRequest);
+    String selectServerUrl(List<String> serviceUrlList, RpcRequest rpcRequest);
 }

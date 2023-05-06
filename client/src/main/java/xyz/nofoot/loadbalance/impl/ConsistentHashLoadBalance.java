@@ -1,4 +1,4 @@
-package xyz.nofoot.loadbalance.loadbalancer;
+package xyz.nofoot.loadbalance.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import xyz.nofoot.dto.RpcRequest;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @projectName: nRPC
- * @package: xyz.nofoot.loadbalance.loadbalancer
+ * @package: xyz.nofoot.loadbalance.impl
  * @className: ConsistentHashLoadBalance
  * @author: NoFoot
  * @date: 4/18/23 12:14 AM

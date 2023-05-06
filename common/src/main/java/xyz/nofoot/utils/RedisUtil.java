@@ -107,13 +107,13 @@ public final class RedisUtil {
      * @date: 5/6/2023 11:12 AM
      * @description: 通过服务名获取地址列表
      */
-    public static List<String> getServiceAddressList(String rpcServiceName) {
+    public static List<String> getServiceUrlList(String rpcServiceName) {
         StringRedisTemplate srt = getStringRedisTemplate();
-        Set<String> addressSet = null;
+        Set<String> urlSet = null;
         try {
-            addressSet = srt.opsForSet().members(rpcServiceName);
+            urlSet = srt.opsForSet().members(rpcServiceName);
 
-            if (null == addressSet || addressSet.isEmpty()) {
+            if (CollectionUtil.isEmpty(urlSet)) {
                 log.error("服务地址不存在或为空 [{}]", rpcServiceName);
                 return new ArrayList<>();
             }
@@ -121,8 +121,8 @@ public final class RedisUtil {
             log.error("获取地址数据失败 [{}]", rpcServiceName);
             e.printStackTrace();
         }
-        assert addressSet != null;
-        return new ArrayList<>(addressSet);
+        assert urlSet != null;
+        return new ArrayList<>(urlSet);
     }
 
     /**

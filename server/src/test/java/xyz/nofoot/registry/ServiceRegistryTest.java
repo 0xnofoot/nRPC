@@ -39,7 +39,25 @@ public class ServiceRegistryTest {
             RedisServiceRegistry redisServiceRegistry = new RedisServiceRegistry();
             InetSocketAddress address = new InetSocketAddress(host, port);
             RpcServiceConfig demoRpcService = RpcServiceConfig.builder()
-                    .group("test2").version("v2").service(new HelloServiceImpl_1()).build();
+                    .group("test1").version("v1").service(new HelloServiceImpl_1()).build();
+            redisServiceRegistry.registerService(demoRpcService.getRpcServiceName(), address);
+            port++;
+        }
+        port = 18084;
+        for (int i = 0; i < 5; i++) {
+            RedisServiceRegistry redisServiceRegistry = new RedisServiceRegistry();
+            InetSocketAddress address = new InetSocketAddress(host, port);
+            RpcServiceConfig demoRpcService = RpcServiceConfig.builder()
+                    .group("test2").version("v1").service(new HelloServiceImpl_1()).build();
+            redisServiceRegistry.registerService(demoRpcService.getRpcServiceName(), address);
+            port++;
+        }
+        port = 18084;
+        for (int i = 0; i < 5; i++) {
+            RedisServiceRegistry redisServiceRegistry = new RedisServiceRegistry();
+            InetSocketAddress address = new InetSocketAddress(host, port);
+            RpcServiceConfig demoRpcService = RpcServiceConfig.builder()
+                    .group("test3").version("v1").service(new HelloServiceImpl_1()).build();
             redisServiceRegistry.registerService(demoRpcService.getRpcServiceName(), address);
             port++;
         }

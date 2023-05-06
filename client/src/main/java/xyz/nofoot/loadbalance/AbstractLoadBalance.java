@@ -17,14 +17,14 @@ public abstract class AbstractLoadBalance implements LoadBalance {
 
     /**
      * @param serviceAddresses: 服务地址列表
-     * @param rpcRequest: rpc 请求消息
+     * @param rpcRequest:       rpc 请求消息
      * @return: String
      * @author: NoFoot
      * @date: 4/18/23 12:02 AM
      * @description: 校验服务列表，调用 doSelect() 函数
      */
     @Override
-    public String selectServerAddress(List<String> serviceAddresses, RpcRequest rpcRequest) {
+    public String selectServerUrl(List<String> serviceAddresses, RpcRequest rpcRequest) {
         if (CollectionUtil.isEmpty(serviceAddresses)) {
             return null;
         }

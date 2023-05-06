@@ -1,13 +1,10 @@
 package xyz.nofoot.registry;
 
 import org.junit.Test;
-import xyz.nofoot.demo.DemoRpcService;
-import xyz.nofoot.demo.DemoRpcServiceImpl;
 import xyz.nofoot.dto.RpcRequest;
-import xyz.nofoot.dto.RpcResponse;
-import xyz.nofoot.registry.zk.ZkServiceDiscoveryImpl;
+import xyz.nofoot.registry.impl.RedisServiceDiscovery;
+import xyz.nofoot.registry.impl.ZkServiceDiscovery;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
@@ -26,12 +23,51 @@ public class ServiceDiscoveryTest {
         int i = 100;
         while (true) {
             RpcRequest rpcRequest = RpcRequest.builder()
-                    .interfaceName(DemoRpcService.class.getName()).parameters(new Object[]{})
+                    .interfaceName(HelloService.class.getName()).parameters(new Object[]{})
                     .group("test1").version("v1").build();
 
-            ZkServiceDiscoveryImpl zkServiceDiscovery = new ZkServiceDiscoveryImpl();
+            ZkServiceDiscovery zkServiceDiscovery = new ZkServiceDiscovery();
             InetSocketAddress address = zkServiceDiscovery.lookupService(rpcRequest);
             Thread.sleep(1000);
+        }
+    }
+
+    @Test
+    public void RegisterServiceByRedis() throws InterruptedException {
+        int i = 10;
+        while (i-- != 0) {
+            RpcRequest rpcRequest = RpcRequest.builder()
+                    .interfaceName(HelloService.class.getName()).parameters(new Object[]{})
+                    .group("test1").version("v1").build();
+
+            RedisServiceDiscovery redisServiceDiscovery = new RedisServiceDiscovery();
+            InetSocketAddress address = redisServiceDiscovery.lookupService(rpcRequest);
+            System.out.println(address);
+            Thread.sleep(200);
+        }
+        System.out.println("/////////////////////");
+        i = 10;
+        while (i-- != 0) {
+            RpcRequest rpcRequest = RpcRequest.builder()
+                    .interfaceName(HelloService.class.getName()).parameters(new Object[]{})
+                    .group("test2").version("v1").build();
+
+            RedisServiceDiscovery redisServiceDiscovery = new RedisServiceDiscovery();
+            InetSocketAddress address = redisServiceDiscovery.lookupService(rpcRequest);
+            System.out.println(address);
+            Thread.sleep(200);
+        }
+        System.out.println("/////////////////////");
+        i = 10;
+        while (i-- != 0) {
+            RpcRequest rpcRequest = RpcRequest.builder()
+                    .interfaceName(HelloService.class.getName()).parameters(new Object[]{})
+                    .group("test3").version("v1").build();
+
+            RedisServiceDiscovery redisServiceDiscovery = new RedisServiceDiscovery();
+            InetSocketAddress address = redisServiceDiscovery.lookupService(rpcRequest);
+            System.out.println(address);
+            Thread.sleep(200);
         }
     }
 }

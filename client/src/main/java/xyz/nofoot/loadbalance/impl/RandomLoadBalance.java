@@ -1,4 +1,4 @@
-package xyz.nofoot.loadbalance.loadbalancer;
+package xyz.nofoot.loadbalance.impl;
 
 import xyz.nofoot.dto.RpcRequest;
 import xyz.nofoot.loadbalance.AbstractLoadBalance;
