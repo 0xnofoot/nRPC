@@ -3,6 +3,7 @@ package xyz.nofoot.registry;
 import org.junit.Test;
 import xyz.nofoot.config.RpcServiceConfig;
 import xyz.nofoot.registry.impl.ZkServiceRegistry;
+import xyz.nofoot.utils.RedisUtil;
 
 import java.net.InetSocketAddress;
 
@@ -27,5 +28,24 @@ public class ServiceRegistryTest {
             zkServiceRegistry.registerService(demoRpcService.getRpcServiceName(), address);
             port++;
         }
+    }
+
+    @Test
+    public void RegisterServiceByRedis() {
+        String host = "192.168.1.6";
+        int port = 18084;
+        InetSocketAddress address = new InetSocketAddress(host, port);
+        for (int i = 0; i < 5; i++) {
+            RpcServiceConfig demoRpcService = RpcServiceConfig.builder()
+                    .group("test" + i).version("v1").service(new HelloServiceImpl_1()).build();
+            RedisUtil.addServiceIdentity(demoRpcService.getRpcServiceName(), address);
+
+            InetSocketAddress a = new InetSocketAddress(host, port + 1);
+            RedisUtil.addServiceIdentity(demoRpcService.getRpcServiceName(), a);
+        }
+
+        RedisUtil.clearRegistry(address);
+        InetSocketAddress a = new InetSocketAddress(host, port + 1);
+        RedisUtil.clearRegistry(a);
     }
 }
