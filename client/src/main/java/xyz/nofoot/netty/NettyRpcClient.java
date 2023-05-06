@@ -61,7 +61,7 @@ public class NettyRpcClient implements RpcRequestTransport {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .handler(new ChannelInitializer<>() {
                     @Override
-                    protected void initChannel(Channel ch) throws Exception {
+                    protected void initChannel(Channel ch) {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                         p.addLast(new RpcMessageEncoder());

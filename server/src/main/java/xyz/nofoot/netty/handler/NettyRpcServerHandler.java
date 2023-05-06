@@ -47,7 +47,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @description: TODO
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
             if (msg instanceof RpcMessage rmsg) {
                 log.info("Server 接收到请求：[{}]", rmsg);
@@ -109,7 +109,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @description: TODO
      */
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("Server 异常, 关闭该连接");
         cause.printStackTrace();
         ctx.close();
