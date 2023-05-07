@@ -86,6 +86,7 @@ public class RpcClientProxy implements InvocationHandler {
         if (rpcRequestTransport instanceof NettyRpcClient rpcClient) {
             CompletableFuture<RpcResponse<Object>> completableFuture =
                     (CompletableFuture<RpcResponse<Object>>) rpcClient.sendRpcRequest(rpcRequest);
+            // 阻塞发生在此处
             rpcResponse = completableFuture.get();
         }
         // 可以有其他的客户端实现
