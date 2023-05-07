@@ -1,15 +1,19 @@
 package xyz.nofoot.proxy;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import xyz.nofoot.cache.ResultCache;
 import xyz.nofoot.config.RpcServiceConfig;
 import xyz.nofoot.dto.RpcRequest;
 import xyz.nofoot.dto.RpcResponse;
+import xyz.nofoot.enums.PropertiesKeyEnum;
 import xyz.nofoot.enums.RpcErrorMessageEnum;
 import xyz.nofoot.enums.RpcResponseCodeEnum;
+import xyz.nofoot.enums.ServiceRegistryEnum;
 import xyz.nofoot.exception.RpcException;
+import xyz.nofoot.extension.ExtensionLoader;
 import xyz.nofoot.netty.NettyRpcClient;
 import xyz.nofoot.transport.RpcRequestTransport;
+import xyz.nofoot.utils.PropertiesFileUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -31,6 +35,7 @@ public class RpcClientProxy implements InvocationHandler {
 
     private final RpcRequestTransport rpcRequestTransport;
     private final RpcServiceConfig rpcServiceConfig;
+    private final ResultCache resultCache;
 
     /**
      * @param rpcRequestTransport:
@@ -43,6 +48,8 @@ public class RpcClientProxy implements InvocationHandler {
     public RpcClientProxy(RpcRequestTransport rpcRequestTransport, RpcServiceConfig rpcServiceConfig) {
         this.rpcRequestTransport = rpcRequestTransport;
         this.rpcServiceConfig = rpcServiceConfig;
+        String cache = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.RPC_REGISTRY.getKey(), ServiceRegistryEnum.ZK.getName());
+        this.resultCache = ExtensionLoader.getExtensionLoader(ResultCache.class).getExtension(cache);
     }
 
     /**
@@ -55,6 +62,8 @@ public class RpcClientProxy implements InvocationHandler {
     public RpcClientProxy(RpcRequestTransport rpcRequestTransport) {
         this.rpcRequestTransport = rpcRequestTransport;
         this.rpcServiceConfig = new RpcServiceConfig();
+        String cache = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.RPC_REGISTRY.getKey(), ServiceRegistryEnum.ZK.getName());
+        this.resultCache = ExtensionLoader.getExtensionLoader(ResultCache.class).getExtension(cache);
     }
 
     public <T> T getProxy(Class<T> clazz) {
@@ -71,7 +80,7 @@ public class RpcClientProxy implements InvocationHandler {
      * @description: TODO
      */
     @Override
-    @SneakyThrows
+//    @SneakyThrows
     public Object invoke(Object proxy, Method method, Object[] args) {
         RpcRequest rpcRequest = RpcRequest.builder()
                 .methodName(method.getName())
@@ -82,16 +91,28 @@ public class RpcClientProxy implements InvocationHandler {
                 .group(rpcServiceConfig.getGroup())
                 .version(rpcServiceConfig.getVersion())
                 .build();
+
+        // 获取缓存结果，存在结果直接返回
+        Object cacheResult = resultCache.getCacheResult(rpcRequest);
+        if (null != cacheResult) {
+            return cacheResult;
+        }
+
         RpcResponse<Object> rpcResponse = null;
         if (rpcRequestTransport instanceof NettyRpcClient rpcClient) {
             CompletableFuture<RpcResponse<Object>> completableFuture =
                     (CompletableFuture<RpcResponse<Object>>) rpcClient.sendRpcRequest(rpcRequest);
             // 阻塞发生在此处
-            rpcResponse = completableFuture.get();
+            rpcResponse = completableFuture.join();
         }
         // 可以有其他的客户端实现
         this.check(rpcResponse, rpcRequest);
-        return rpcResponse.getData();
+        Object result = rpcResponse.getData();
+
+        // 缓存远程获取的结果
+        resultCache.cacheResult(rpcRequest, result);
+
+        return result;
     }
 
     private void check(RpcResponse<Object> rpcResponse, RpcRequest rpcRequest) {

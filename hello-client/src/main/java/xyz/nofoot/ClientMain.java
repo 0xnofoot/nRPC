@@ -18,18 +18,18 @@ public class ClientMain {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ClientMain.class);
         HelloController helloController = (HelloController) ctx.getBean("helloController");
 
-        int i = 10;
+        int i = 3;
         while (i-- != 0) {
             helloController.helloTest();
         }
 
         try {
-            Thread.sleep(11000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        i = 10;
+        i = 3;
         while (i-- != 0) {
             helloController.helloTest();
         }

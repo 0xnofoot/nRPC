@@ -20,7 +20,7 @@ import java.util.List;
  * @className: RedisServiceDiscovery
  * @author: NoFoot
  * @date: 5/6/2023 12:31 PM
- * @description: TODO
+ * @description: Redis 实现服务发现功能
  */
 @Slf4j
 public class RedisServiceDiscovery implements ServiceDiscovery {

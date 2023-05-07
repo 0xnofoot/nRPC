@@ -30,7 +30,7 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
      * @return: null
      * @author: NoFoot
      * @date: 4/21/2023 10:24 AM
-     * @description: TODO
+     * @description: 构造 rpcClient, 目前只实现 netty 客户端
      */
     public CustomBeanPostProcessor() {
         // TODO 配置文件

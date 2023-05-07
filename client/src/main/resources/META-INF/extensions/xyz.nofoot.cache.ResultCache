@@ -1,0 +1,2 @@
+zk=xyz.nofoot.cache.impl.ZkResultCache
+redis=xyz.nofoot.cache.impl.RedisResultCache
