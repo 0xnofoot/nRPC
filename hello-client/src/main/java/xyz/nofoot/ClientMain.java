@@ -17,6 +17,21 @@ public class ClientMain {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ClientMain.class);
         HelloController helloController = (HelloController) ctx.getBean("helloController");
-        helloController.helloTest();
+
+        int i = 10;
+        while (i-- != 0) {
+            helloController.helloTest();
+        }
+
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        i = 10;
+        while (i-- != 0) {
+            helloController.helloTest();
+        }
     }
 }

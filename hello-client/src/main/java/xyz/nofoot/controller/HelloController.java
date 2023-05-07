@@ -1,9 +1,9 @@
 package xyz.nofoot.controller;
 
-import xyz.nofoot.dto.Hello;
 import lombok.extern.slf4j.Slf4j;
-import xyz.nofoot.service.HelloService;
 import xyz.nofoot.annotation.RpcReference;
+import xyz.nofoot.dto.Hello;
+import xyz.nofoot.service.HelloService;
 
 /**
  * @projectName: nRPC

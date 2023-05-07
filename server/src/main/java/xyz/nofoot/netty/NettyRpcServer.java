@@ -62,14 +62,13 @@ public class NettyRpcServer {
             b.group(boosGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<>() {
                         @Override
-                        protected void initChannel(Channel ch) throws Exception {
+                        protected void initChannel(Channel ch) {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.HOURS));
+                            p.addLast(new IdleStateHandler(5, 0, 0, TimeUnit.MINUTES));
                             p.addLast(new RpcMessageEncoder());
                             p.addLast(new RpcMessageDecoder());
                             p.addLast(serviceHandlerGroup, new NettyRpcServerHandler());

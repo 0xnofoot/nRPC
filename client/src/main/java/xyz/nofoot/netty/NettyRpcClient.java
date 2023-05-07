@@ -63,7 +63,7 @@ public class NettyRpcClient implements RpcRequestTransport {
                     @Override
                     protected void initChannel(Channel ch) {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
+                        p.addLast(new IdleStateHandler(0, 1, 0, TimeUnit.MINUTES));
                         p.addLast(new RpcMessageEncoder());
                         p.addLast(new RpcMessageDecoder());
                         p.addLast(new NettyRpcClientHandler());
