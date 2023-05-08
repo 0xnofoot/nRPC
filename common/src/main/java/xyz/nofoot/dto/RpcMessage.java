@@ -23,8 +23,8 @@ public class RpcMessage {
     private byte codec;
     // 压缩类型
     private byte compress;
-    // 请求 id
-    private int requestId;
+    // 消息 id
+    private int messageId;
     // 封装的具体数据
     private Object data;
 }

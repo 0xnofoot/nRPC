@@ -22,7 +22,7 @@ import xyz.nofoot.utils.SingletonFactoryUtil;
  * @className: NettyRpcServerHandler
  * @author: NoFoot
  * @date: 4/21/2023 1:24 PM
- * @description: TODO
+ * @description: 读消息的处理类
  */
 @Slf4j
 public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
@@ -32,7 +32,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @return: null
      * @author: NoFoot
      * @date: 4/21/2023 1:38 PM
-     * @description: TODO
+     * @description: 构造，提供 rpcRequest 的处理类
      */
     public NettyRpcServerHandler() {
         this.rpcRequestHandler = SingletonFactoryUtil.getInstance(RpcRequestHandler.class);
@@ -44,7 +44,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @return: void
      * @author: NoFoot
      * @date: 4/21/2023 1:38 PM
-     * @description: TODO
+     * @description: 重写，处理读事件
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -85,7 +85,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @return: void
      * @author: NoFoot
      * @date: 4/21/2023 1:38 PM
-     * @description: TODO
+     * @description: 读事件，触发后关闭对应连接
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -106,7 +106,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
      * @return: void
      * @author: NoFoot
      * @date: 4/21/2023 1:38 PM
-     * @description: TODO
+     * @description: netty 异常处理
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

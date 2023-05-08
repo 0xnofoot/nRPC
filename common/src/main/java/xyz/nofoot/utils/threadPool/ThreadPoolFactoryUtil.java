@@ -73,13 +73,19 @@ public class ThreadPoolFactoryUtil {
         return threadPool;
     }
 
+    /**
+     * @return: void
+     * @author: NoFoot
+     * @date: 5/8/2023 6:05 PM
+     * @description: TODO
+     */
     public static void shutdownAllThreadPool() {
-        log.info("准备关闭所有线程池");
+        log.debug("准备关闭所有线程池");
         THREAD_POOLS.entrySet().parallelStream().forEach(
                 entry -> {
                     ExecutorService executorService = entry.getValue();
                     executorService.shutdown();
-                    log.info("关闭线程池：[{}] [{}]", entry.getKey(), executorService.isTerminated());
+                    log.debug("关闭线程池：[{}] [{}]", entry.getKey(), executorService.isTerminated());
                     try {
                         if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
                             log.error("线程池关闭超时, 尝试强制关闭");

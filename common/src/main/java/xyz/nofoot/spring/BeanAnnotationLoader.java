@@ -36,7 +36,7 @@ public class BeanAnnotationLoader {
         ArrayList<Class<? extends Annotation>> classes = new ArrayList<>();
 
         if (url == null) {
-            log.info("未读取到文件:[{}]", fileName);
+            log.warn("未读取到文件:[{}]", fileName);
             return classes;
         }
 

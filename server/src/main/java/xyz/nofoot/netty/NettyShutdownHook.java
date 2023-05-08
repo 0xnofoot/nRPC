@@ -7,6 +7,7 @@ import xyz.nofoot.enums.ServiceRegistryEnum;
 import xyz.nofoot.utils.CuratorUtil;
 import xyz.nofoot.utils.PropertiesFileUtil;
 import xyz.nofoot.utils.RedisUtil;
+import xyz.nofoot.utils.threadPool.ThreadPoolFactoryUtil;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -35,7 +36,7 @@ public class NettyShutdownHook {
     }
 
     public void clearAll() {
-        log.info("添加服务关闭Hook，用于删除所有注册的服务");
+        log.debug("添加服务关闭Hook，用于删除所有注册的服务");
         String registry = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.RPC_REGISTRY.getKey(), ServiceRegistryEnum.ZK.getName());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -46,10 +47,11 @@ public class NettyShutdownHook {
                 } else if (registry.equals(ServiceRegistryEnum.REDIS.getName())) {
                     RedisUtil.clearRegistry(inetSocketAddress);
                 }
+                ThreadPoolFactoryUtil.shutdownAllThreadPool();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
-            log.info("Server 已关闭");
+            log.debug("Server 已关闭");
         }));
     }
 

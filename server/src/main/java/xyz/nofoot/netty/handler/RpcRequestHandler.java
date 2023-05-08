@@ -15,18 +15,17 @@ import java.lang.reflect.Method;
  * @className: RpcRequestHandler
  * @author: NoFoot
  * @date: 4/21/2023 1:28 PM
- * @description: TODO
+ * @description: rpcRequest 的处理类
  */
 @Slf4j
 public class RpcRequestHandler {
     private final ServiceProvider serviceProvider;
 
     /**
-     * @param :
      * @return: null
      * @author: NoFoot
      * @date: 4/21/2023 1:30 PM
-     * @description: TODO
+     * @description: 构造，赋值服务发现类
      */
     public RpcRequestHandler() {
         serviceProvider = SingletonFactoryUtil.getInstance(ServiceProvider.class);
@@ -37,7 +36,7 @@ public class RpcRequestHandler {
      * @return: Object
      * @author: NoFoot
      * @date: 4/21/2023 1:30 PM
-     * @description: TODO
+     * @description: rpcRequest 的处理函数
      */
     public Object handle(RpcRequest rpcRequest) {
         Object service = serviceProvider.getService(rpcRequest.getRpcServiceName());
@@ -50,7 +49,7 @@ public class RpcRequestHandler {
      * @return: Object
      * @author: NoFoot
      * @date: 4/21/2023 1:30 PM
-     * @description: TODO
+     * @description: request 的方法的具体执行，并返回执行结果
      */
     private Object invokeTargetMethod(RpcRequest rpcRequest, Object service) {
         Object result;

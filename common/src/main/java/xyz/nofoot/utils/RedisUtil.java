@@ -292,7 +292,7 @@ public final class RedisUtil {
                     String address = p.split("/")[1];
                     Long r = srt.opsForSet().remove(rpcServiceName, address);
                     if (null != r && r != 0) {
-                        log.info("清除服务成功 [{}]", p);
+                        log.debug("清除服务成功 [{}]", p);
                     }
                 }
             } catch (Exception e) {

@@ -46,7 +46,7 @@ public class ComponentScannerRegistrar implements ImportBeanDefinitionRegistrar,
      * @return: void
      * @author: NoFoot
      * @date: 4/18/2023 3:52 PM
-     * @description: 自定义 bean 方法
+     * @description: 自定义 bean 方法, 扫描注解，注册 bean
      */
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -90,9 +90,9 @@ public class ComponentScannerRegistrar implements ImportBeanDefinitionRegistrar,
         // 扫描 bean
         int count;
         count = springBeanAnnotationClassScanner.scan(SPRING_BEAN_BASE_PACKAGE);
-        log.info("spring 自定义扫描器扫描到的数量：[{}]", count);
+        log.debug("spring 自定义扫描器扫描到的数量：[{}]", count);
 
         count = rpcBeanAnnotationClassScanner.scan(rpcScanBasePackages);
-        log.info("rpc 自定义扫描器扫描到的数量：[{}]", count);
+        log.debug("rpc 自定义扫描器扫描到的数量：[{}]", count);
     }
 }
