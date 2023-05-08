@@ -54,11 +54,11 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            log.info("Client 收到消息：[{}]", msg);
+            log.debug("Client 收到消息：[{}]", msg);
             if (msg instanceof RpcMessage tmp) {
                 byte messageType = tmp.getMessageType();
                 if (messageType == RpcConstants.HEARTBEAT_RESPONSE_TYPE) {
-                    log.info("心跳检测 [{}]", tmp.getData());
+                    log.debug("心跳检测 [{}]", tmp.getData());
                 } else if (messageType == RpcConstants.RESPONSE_TYPE) {
                     RpcResponse<Object> rpcResponse = (RpcResponse<Object>) tmp.getData();
                     unprocessedRequests.complete(rpcResponse);
@@ -83,7 +83,7 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent idleStateEvent) {
             IdleState state = idleStateEvent.state();
             if (state == IdleState.WRITER_IDLE) {
-                log.info("write idle 发生 [{}]", ctx.channel().remoteAddress());
+                log.debug("write idle 发生 [{}]", ctx.channel().remoteAddress());
                 Channel channel = nettyRpcClient.getChannel((InetSocketAddress) ctx.channel().remoteAddress());
                 RpcMessage rpcMessage = new RpcMessage();
                 // TODO 改 配置文件

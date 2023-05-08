@@ -77,10 +77,16 @@ public class RpcClientProxy implements InvocationHandler {
      * @return: Object
      * @author: NoFoot
      * @date: 4/21/2023 10:25 AM
-     * @description: TODO
+     * @description: 代理类的执行逻辑，构建 rpcRequest，尝试获取缓存，从远端获取 result
+     * 值得注意的是：jdk 代理并没有代理 toString(), hashCode(), equals(), 这三个方法
+     * 而且代码中也没有怎么处理，只是单纯判断了 toString() 方法并返回代理的名称信息
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
+        if (method.getName().equals("toString")) {
+            return proxy.getClass().getName() + "@" + proxy.getClass().hashCode();
+        }
+
         RpcRequest rpcRequest = RpcRequest.builder()
                 .methodName(method.getName())
                 .parameters(args)

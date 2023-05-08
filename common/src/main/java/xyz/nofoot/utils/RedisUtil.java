@@ -201,11 +201,11 @@ public final class RedisUtil {
      * @return: byte
      * @author: NoFoot
      * @date: 5/8/2023 12:55 PM
-     * @description: Redis 存取对象的默认 序列化和压缩
+     * @description: Redis 存取对象的默认 序列化和压缩, 默认 Hessian 序列化，因为 Protostuff 不能序列化 Object
      */
     private static byte[] resultToBytes(Object result) {
         Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
-                .getExtension(SerializationTypeEnum.PROTOSTUFF.getName());
+                .getExtension(SerializationTypeEnum.HESSIAN.getName());
         byte[] serializeData = serializer.serialize(result);
         Compress compress = ExtensionLoader.getExtensionLoader(Compress.class)
                 .getExtension(CompressTypeEnum.GZIP.getName());
@@ -217,14 +217,14 @@ public final class RedisUtil {
      * @return: Object
      * @author: NoFoot
      * @date: 5/8/2023 12:55 PM
-     * @description: Redis 存取对象的默认 反序列化和反压缩
+     * @description: Redis 存取对象的默认 序列化和压缩, 默认 Hessian 序列化，因为 Protostuff 不能序列化 Object
      */
     private static Object bytesToResult(byte[] bytes) {
         Compress compress = ExtensionLoader.getExtensionLoader(Compress.class)
                 .getExtension(CompressTypeEnum.GZIP.getName());
         byte[] compressResult = compress.deCompress(bytes);
         Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
-                .getExtension(SerializationTypeEnum.PROTOSTUFF.getName());
+                .getExtension(SerializationTypeEnum.HESSIAN.getName());
         return serializer.deserialize(compressResult, Object.class);
     }
 
@@ -238,6 +238,7 @@ public final class RedisUtil {
      */
     public static void redisCacheResult(RpcRequest rpcRequest, Object result) {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
+                + "_" + rpcRequest.getMethodName()
                 + "_" + Arrays.toString(rpcRequest.getParameterTypes())
                 + "_" + Arrays.toString(rpcRequest.getParameters());
         long hashKey = getKeyHash(rpcServiceKey);
@@ -257,17 +258,17 @@ public final class RedisUtil {
      */
     public static Object getRedisCacheResult(RpcRequest rpcRequest) {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
+                + "_" + rpcRequest.getMethodName()
                 + "_" + Arrays.toString(rpcRequest.getParameterTypes())
                 + "_" + Arrays.toString(rpcRequest.getParameters());
+        long hashKey = getKeyHash(rpcServiceKey);
 
         RedisTemplate<Long, byte[]> rrt = getResultRedisTemplate();
-        byte[] bytesResult = rrt.opsForValue().get(rpcServiceKey);
+        byte[] bytesResult = rrt.opsForValue().get(hashKey);
         Object result = null;
 
         if (null != bytesResult) {
-            long hashKey = getKeyHash(rpcServiceKey);
             rrt.expire(hashKey, CACHE_TTL, CACHE_TTL_TIME_UNIT);
-            redisCacheResult(rpcRequest, result);
             result = bytesToResult(bytesResult);
         }
 

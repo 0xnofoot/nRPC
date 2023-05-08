@@ -50,7 +50,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
             if (msg instanceof RpcMessage rmsg) {
-                log.info("Server 接收到请求：[{}]", rmsg);
+                log.debug("Server 接收到请求：[{}]", rmsg);
                 byte messageType = rmsg.getMessageType();
                 RpcMessage rpcMessage = new RpcMessage();
                 rpcMessage.setCodec(SerializationTypeEnum.PROTOSTUFF.getCode());
@@ -61,7 +61,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                 } else {
                     RpcRequest rpcRequest = (RpcRequest) rmsg.getData();
                     Object result = rpcRequestHandler.handle(rpcRequest);
-                    log.info(String.format("Server 获取执行结果: %s", result.toString()));
+                    log.debug(String.format("Server 获取执行结果: %s", result.toString()));
                     rpcMessage.setMessageType(RpcConstants.RESPONSE_TYPE);
                     if (ctx.channel().isActive() && ctx.channel().isWritable()) {
                         RpcResponse<Object> rpcResponse = RpcResponse.success(result, rpcRequest.getRequestID());
@@ -92,7 +92,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent idleStateEvent) {
             IdleState state = idleStateEvent.state();
             if (state == IdleState.READER_IDLE) {
-                log.info("idle 读触发，关闭该连接");
+                log.debug("idle 读触发，关闭该连接");
                 ctx.close();
             }
         } else {

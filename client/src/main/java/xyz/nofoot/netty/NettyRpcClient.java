@@ -98,7 +98,7 @@ public class NettyRpcClient implements RpcRequestTransport {
                     .messageType(RpcConstants.REQUEST_TYPE).build();
             channel.writeAndFlush(rpcMessage).addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {
-                    log.info("Client 发送消息：[{}]", rpcMessage);
+                    log.debug("Client 发送消息：[{}]", rpcMessage);
                 } else {
                     future.channel().close();
                     resultFuture.completeExceptionally(future.cause());
@@ -124,7 +124,7 @@ public class NettyRpcClient implements RpcRequestTransport {
         bootstrap.connect(inetSocketAddress).addListener(
                 (ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
-                        log.info("Client 连接 Server [{}] 成功", inetSocketAddress);
+                        log.debug("Client 连接 Server [{}] 成功", inetSocketAddress);
                         channelCompletableFuture.complete(future.channel());
                     } else {
                         throw new IllegalArgumentException();

@@ -57,7 +57,7 @@ public class RpcRequestHandler {
         try {
             Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
             result = method.invoke(service, rpcRequest.getParameters());
-            log.info("服务[{}] 成功执行方法[{}]", rpcRequest.getRpcServiceName(), rpcRequest.getMethodName());
+            log.debug("服务[{}] 成功执行方法[{}]", rpcRequest.getRpcServiceName(), rpcRequest.getMethodName());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RpcException(e.getMessage(), e);
         }
