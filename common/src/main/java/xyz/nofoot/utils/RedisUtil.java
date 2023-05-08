@@ -6,8 +6,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import xyz.nofoot.dto.RpcRequest;
 import xyz.nofoot.enums.PropertiesKeyEnum;
 
@@ -17,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @projectName: nRPC
@@ -35,6 +34,8 @@ public final class RedisUtil {
     private static final String DEFAULT_REDIS_ADDRESS = "127.0.0.1:6379";
     private static final String DEFAULT_REDIS_USERNAME = null;
     private static final String DEFAULT_REDIS_PASSWORD = null;
+    private static final long CACHE_TTL = 30;
+    private static final TimeUnit CACHE__TTL_TIME_UNIT = TimeUnit.SECONDS;
 
     /**
      * @author: NoFoot
@@ -143,7 +144,6 @@ public final class RedisUtil {
 
             if (CollectionUtil.isEmpty(urlSet)) {
                 log.error("服务地址不存在或为空 [{}]", rpcServiceName);
-                System.out.println("tttttttttttttttttttttt");
                 return new ArrayList<>();
             }
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public final class RedisUtil {
      * @return: void
      * @author: NoFoot
      * @date: 5/7/2023 8:15 PM
-     * @description: TODO
+     * @description: 缓存远程返回的结果，有效期 30s
      */
     public static void redisCacheResult(RpcRequest rpcRequest, Object result) {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
@@ -168,7 +168,7 @@ public final class RedisUtil {
                 + "_" + Arrays.toString(rpcRequest.getParameters());
 
         RedisTemplate<String, Object> rt = getRedisTemplate();
-        rt.opsForValue().set(rpcServiceKey, result);
+        rt.opsForValue().set(rpcServiceKey, result, CACHE_TTL, CACHE__TTL_TIME_UNIT);
     }
 
     /**
@@ -176,14 +176,19 @@ public final class RedisUtil {
      * @return: Object
      * @author: NoFoot
      * @date: 5/7/2023 8:03 PM
-     * @description: TODO
+     * @description: 从 Redis 获取缓存的结果，没有则为 null
      */
     public static Object getRedisCacheResult(RpcRequest rpcRequest) {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
                 + "_" + Arrays.toString(rpcRequest.getParameterTypes())
                 + "_" + Arrays.toString(rpcRequest.getParameters());
         RedisTemplate<String, Object> rt = getRedisTemplate();
-        return rt.opsForValue().get(rpcServiceKey);
+        Object result = rt.opsForValue().get(rpcServiceKey);
+        if (null != result) {
+            rt.expire(rpcServiceKey, CACHE_TTL, CACHE__TTL_TIME_UNIT);
+            redisCacheResult(rpcRequest, result);
+        }
+        return result;
     }
 
 
