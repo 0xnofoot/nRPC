@@ -1,6 +1,5 @@
 package xyz.nofoot.proxy;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import xyz.nofoot.cache.ResultCache;
 import xyz.nofoot.config.RpcServiceConfig;
@@ -81,7 +80,6 @@ public class RpcClientProxy implements InvocationHandler {
      * @description: TODO
      */
     @Override
-    @SneakyThrows
     public Object invoke(Object proxy, Method method, Object[] args) {
         RpcRequest rpcRequest = RpcRequest.builder()
                 .methodName(method.getName())

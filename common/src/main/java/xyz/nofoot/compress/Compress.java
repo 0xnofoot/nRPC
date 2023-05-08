@@ -28,5 +28,5 @@ public interface Compress {
      * @date: 4/20/2023 11:28 AM
      * @description: 数据解压缩
      */
-    byte[] doCompress(byte[] bytes);
+    byte[] deCompress(byte[] bytes);
 }

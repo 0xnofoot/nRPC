@@ -6,10 +6,19 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import xyz.nofoot.compress.Compress;
 import xyz.nofoot.dto.RpcRequest;
+import xyz.nofoot.enums.CompressTypeEnum;
 import xyz.nofoot.enums.PropertiesKeyEnum;
+import xyz.nofoot.enums.SerializationTypeEnum;
+import xyz.nofoot.extension.ExtensionLoader;
+import xyz.nofoot.serialize.Serializer;
 
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,13 +38,13 @@ import java.util.concurrent.TimeUnit;
 public final class RedisUtil {
     private static final Set<String> REGISTERED_SERVICE_SET = ConcurrentHashMap.newKeySet();
     private static StringRedisTemplate stringRedisTemplate;
-    private static RedisTemplate<String, Object> redisTemplate;
+    private static RedisTemplate<Long, byte[]> resultRedisTemplate;
     // 默认 redis 地址，自定义地址请放在 rpc.properties 文件中
     private static final String DEFAULT_REDIS_ADDRESS = "127.0.0.1:6379";
     private static final String DEFAULT_REDIS_USERNAME = null;
     private static final String DEFAULT_REDIS_PASSWORD = null;
     private static final long CACHE_TTL = 30;
-    private static final TimeUnit CACHE__TTL_TIME_UNIT = TimeUnit.SECONDS;
+    private static final TimeUnit CACHE_TTL_TIME_UNIT = TimeUnit.SECONDS;
 
     /**
      * @author: NoFoot
@@ -49,7 +58,7 @@ public final class RedisUtil {
      * @return: RedisConnectionFactory
      * @author: NoFoot
      * @date: 5/7/2023 9:05 PM
-     * @description: TODO
+     * @description: 集成 lettuce 初始化 redis configuration
      */
     private static RedisConnectionFactory getConnectionFactory() {
         String redisAddress = PropertiesFileUtil.getRpcProperty(PropertiesKeyEnum.REDIS_ADDRESS.getKey(), DEFAULT_REDIS_ADDRESS);
@@ -73,24 +82,29 @@ public final class RedisUtil {
         return lettuceConnectionFactory;
     }
 
-    private static RedisTemplate<String, Object> getRedisTemplate() {
-        if (redisTemplate != null) {
-            return redisTemplate;
+    /**
+     * @return: RedisTemplate<Long, Object>
+     * @author: NoFoot
+     * @date: 5/8/2023 12:37 PM
+     * @description: 获取用于 result cache 的 redisTemplate
+     */
+    private static RedisTemplate<Long, byte[]> getResultRedisTemplate() {
+        if (resultRedisTemplate != null) {
+            return resultRedisTemplate;
         }
-        redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(getConnectionFactory());
-//        redisTemplate.setKeySerializer(new StringRedisSerializer());
-//        redisTemplate.setValueSerializer(new GenericToStringSerializer<>(byte[].class));
-        redisTemplate.afterPropertiesSet();
+        resultRedisTemplate = new RedisTemplate<>();
+        resultRedisTemplate.setConnectionFactory(getConnectionFactory());
+        resultRedisTemplate.setKeySerializer(new GenericToStringSerializer<>(Long.class));
+        resultRedisTemplate.afterPropertiesSet();
 
-        return redisTemplate;
+        return resultRedisTemplate;
     }
 
     /**
      * @return: StringRedisTemplate
      * @author: NoFoot
      * @date: 5/5/2023 7:32 PM
-     * @description: 集成 lettuce 初始化 redis client，获取 stringRedisTemplate
+     * @description: 获取 stringRedisTemplate
      */
     private static StringRedisTemplate getStringRedisTemplate() {
         if (stringRedisTemplate != null) {
@@ -155,6 +169,66 @@ public final class RedisUtil {
     }
 
     /**
+     * @param key:
+     * @return: long
+     * @author: NoFoot
+     * @date: 5/8/2023 12:49 PM
+     * @description: TODO
+     */
+    private static long getKeyHash(String key) {
+        MessageDigest md;
+        byte[] mdDigest;
+
+        try {
+            md = MessageDigest.getInstance("MD5");
+            byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
+            md.update(bytes);
+            mdDigest = md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            log.error("error in md5");
+            e.printStackTrace();
+            return key.hashCode();
+        }
+
+        return ((long) (mdDigest[3 + 3 * 4] & 255) << 24
+                | (long) (mdDigest[2 + 3 * 4] & 255) << 16
+                | (long) (mdDigest[1 + 3 * 4] & 255) << 8
+                | (long) (mdDigest[3 * 4] & 255)) & 4294967295L;
+    }
+
+    /**
+     * @param result:
+     * @return: byte
+     * @author: NoFoot
+     * @date: 5/8/2023 12:55 PM
+     * @description: Redis 存取对象的默认 序列化和压缩
+     */
+    private static byte[] resultToBytes(Object result) {
+        Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
+                .getExtension(SerializationTypeEnum.PROTOSTUFF.getName());
+        byte[] serializeData = serializer.serialize(result);
+        Compress compress = ExtensionLoader.getExtensionLoader(Compress.class)
+                .getExtension(CompressTypeEnum.GZIP.getName());
+        return compress.compress(serializeData);
+    }
+
+    /**
+     * @param bytes:
+     * @return: Object
+     * @author: NoFoot
+     * @date: 5/8/2023 12:55 PM
+     * @description: Redis 存取对象的默认 反序列化和反压缩
+     */
+    private static Object bytesToResult(byte[] bytes) {
+        Compress compress = ExtensionLoader.getExtensionLoader(Compress.class)
+                .getExtension(CompressTypeEnum.GZIP.getName());
+        byte[] compressResult = compress.deCompress(bytes);
+        Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
+                .getExtension(SerializationTypeEnum.PROTOSTUFF.getName());
+        return serializer.deserialize(compressResult, Object.class);
+    }
+
+    /**
      * @param rpcRequest:
      * @param result:
      * @return: void
@@ -166,9 +240,12 @@ public final class RedisUtil {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
                 + "_" + Arrays.toString(rpcRequest.getParameterTypes())
                 + "_" + Arrays.toString(rpcRequest.getParameters());
+        long hashKey = getKeyHash(rpcServiceKey);
 
-        RedisTemplate<String, Object> rt = getRedisTemplate();
-        rt.opsForValue().set(rpcServiceKey, result, CACHE_TTL, CACHE__TTL_TIME_UNIT);
+        byte[] resultBytes = resultToBytes(result);
+
+        RedisTemplate<Long, byte[]> rrt = getResultRedisTemplate();
+        rrt.opsForValue().set(hashKey, resultBytes, CACHE_TTL, CACHE_TTL_TIME_UNIT);
     }
 
     /**
@@ -182,15 +259,20 @@ public final class RedisUtil {
         String rpcServiceKey = rpcRequest.getRpcServiceName()
                 + "_" + Arrays.toString(rpcRequest.getParameterTypes())
                 + "_" + Arrays.toString(rpcRequest.getParameters());
-        RedisTemplate<String, Object> rt = getRedisTemplate();
-        Object result = rt.opsForValue().get(rpcServiceKey);
-        if (null != result) {
-            rt.expire(rpcServiceKey, CACHE_TTL, CACHE__TTL_TIME_UNIT);
+
+        RedisTemplate<Long, byte[]> rrt = getResultRedisTemplate();
+        byte[] bytesResult = rrt.opsForValue().get(rpcServiceKey);
+        Object result = null;
+
+        if (null != bytesResult) {
+            long hashKey = getKeyHash(rpcServiceKey);
+            rrt.expire(hashKey, CACHE_TTL, CACHE_TTL_TIME_UNIT);
             redisCacheResult(rpcRequest, result);
+            result = bytesToResult(bytesResult);
         }
+
         return result;
     }
-
 
     /**
      * @param inetSocketAddress:

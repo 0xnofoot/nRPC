@@ -52,7 +52,7 @@ public class GzipCompress implements Compress {
      * @description: TODO
      */
     @Override
-    public byte[] doCompress(byte[] bytes) {
+    public byte[] deCompress(byte[] bytes) {
         if (null == bytes) {
             throw new NullPointerException("byte 为空，解压缩失败");
         }
