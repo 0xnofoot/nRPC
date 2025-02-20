@@ -55,23 +55,6 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                 RpcMessage rpcMessage = new RpcMessage();
                 rpcMessage.setCodec(SerializationTypeEnum.PROTOSTUFF.getCode());
                 rpcMessage.setCompress(CompressTypeEnum.GZIP.getCode());
-                if (messageType == RpcConstants.HEARTBEAT_REQUEST_TYPE) {
-                    rpcMessage.setMessageType(RpcConstants.HEARTBEAT_RESPONSE_TYPE);
-                    rpcMessage.setData(RpcConstants.PONG);
-                } else {
-                    RpcRequest rpcRequest = (RpcRequest) rmsg.getData();
-                    Object result = rpcRequestHandler.handle(rpcRequest);
-                    log.debug(String.format("Server 获取执行结果: %s", result.toString()));
-                    rpcMessage.setMessageType(RpcConstants.RESPONSE_TYPE);
-                    if (ctx.channel().isActive() && ctx.channel().isWritable()) {
-                        RpcResponse<Object> rpcResponse = RpcResponse.success(result, rpcRequest.getRequestID());
-                        rpcMessage.setData(rpcResponse);
-                    } else {
-                        RpcResponse<Object> rpcResponse = RpcResponse.fail(RpcResponseCodeEnum.FAIL);
-                        rpcMessage.setData(rpcResponse);
-                        log.error("结果写回失败！！");
-                    }
-                }
                 ctx.writeAndFlush(rpcMessage).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
         } finally {
