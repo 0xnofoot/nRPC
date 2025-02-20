@@ -26,7 +26,6 @@ import xyz.nofoot.utils.SingletonFactoryUtil;
  */
 @Slf4j
 public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
-    private final RpcRequestHandler rpcRequestHandler;
 
     /**
      * @return: null
